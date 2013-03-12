@@ -10,18 +10,22 @@ public class PictureTaking : MonoBehaviour {
 	private bool guiOn, takeShot;
 	int indexLookingAt;
 	public ArrayList textures;
-	public Texture2D[] array;
+	public int[] scores;
 	int resWidth, resHeight;
-	private int count = 0;
+	private int count = 0, maxNumberOfShots = 20;
 	
 	
 	public GUITexture cameraMark;
+	
+	public bool rabbitPictureHave;
 	
 	void Start(){
 		resWidth=Screen.width;
 		resHeight=Screen.height;
 		takeShot=true;
 		textures = new ArrayList();
+		
+		scores = new int[maxNumberOfShots];
 		//Store in playerprefs for later
 		/**
 		for(int i =0; i<3; i++){
@@ -37,7 +41,7 @@ public class PictureTaking : MonoBehaviour {
 	void Update(){
 		
 		
-		array = textures.ToArray() as Texture2D[];
+		//array = textures.ToArray() as Texture2D[];
 		
 		
 		Vector3 cameraEnd = transform.position;
@@ -72,8 +76,17 @@ public class PictureTaking : MonoBehaviour {
 			}
 			
 			
-			if(Input.GetMouseButtonDown(0) ){
+			if(Input.GetMouseButtonDown(0) && count<maxNumberOfShots){
+				//Figure out the score
+				RaycastHit[] hits = Physics.SphereCastAll(transform.position, 10.0f, transform.forward, 100.0f);
+				
+				
+				int scoreForDis=determineScore(hits);
+				
+				scores[count] = scoreForDis;
+				
 				StartCoroutine(TakePicture());
+				
 				//StartCoroutine(ScreenshotEncode());
 			}
 			
@@ -113,6 +126,8 @@ public class PictureTaking : MonoBehaviour {
 	}
 	
 	
+	
+	
 	void LateUpdate(){
 		if(!takeShot){
 			
@@ -121,6 +136,61 @@ public class PictureTaking : MonoBehaviour {
 			
 			
 		}
+	}
+	
+	int determineScore(RaycastHit[] hits){
+		int scoreToReturn =0;
+		Vector2 middleOfScreen = new Vector2(Screen.width/2,Screen.height/2);
+		
+		ArrayList creaturesInPic = new ArrayList();
+		
+		foreach(RaycastHit hitt in hits){
+			if(hitt.collider.tag=="Creature"){
+				BasicCreature bc = hitt.collider.GetComponent<BasicCreature>();
+				
+				//If it has Basic Creature attached, it's a for real creature and not just a limb or something
+				if(bc!=null){
+					if(!creaturesInPic.Contains(bc)){
+						
+						
+						//You get a 1000 points for a new picture of a creature
+						if(!rabbitPictureHave){
+							//TODO; Need to check if we already have a picture of the thing
+							scoreToReturn+=1000;
+			
+							rabbitPictureHave=true;
+						}
+						else{
+							//You automatically get 100 points for each creature in the picture, scaled by distance to center of frame
+							//and what it's current state is (so you get 0 for running away creatures, 100 or less for standing creatures and so on
+							Vector2 screenPos = camera.WorldToScreenPoint(bc.transform.position);
+							
+							
+							float distance = Vector3.Distance(screenPos,middleOfScreen);
+							
+							float distance3D = (transform.position-bc.transform.position).magnitude;
+							
+							if(distance==0){
+								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.currentState*100);
+							}
+							else{
+								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.currentState*100*(1.0f/distance));
+							}
+							
+							
+							
+							
+							
+						
+						}
+						creaturesInPic.Add(bc);
+					}
+				}
+			}
+		}
+		
+		
+		return scoreToReturn;
 	}
 	
 	
@@ -136,7 +206,7 @@ public class PictureTaking : MonoBehaviour {
  
 		textures.Add(texture);
 		
-		
+		count++;
 	}
 	
 	/**
@@ -180,6 +250,8 @@ public class PictureTaking : MonoBehaviour {
 			
 			if(tex!=null){
 				GUI.Box (new Rect (10,10,Screen.width-20,Screen.height-20), tex);
+				
+				GUI.TextArea( new Rect(0,0,Screen.width/4, 30), "Score: "+scores[indexLookingAt]);
 			}
 			else{
 				GUI.Box(new Rect (10,10,100,50), "Nothing Found");

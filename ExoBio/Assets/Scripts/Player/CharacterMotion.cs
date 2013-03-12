@@ -272,6 +272,10 @@ public class CharacterMotion : MonoBehaviour {
 						if(currMovementState==MovementState.JUMPING){
 						currMovementState=MovementState.NORMAL;
 						}
+				
+						if(hit.distance<distance){
+							transform.position+=new Vector3(0,Time.deltaTime*20*(distance-hit.distance),0);
+						}
 					}
 			
 			
@@ -280,9 +284,7 @@ public class CharacterMotion : MonoBehaviour {
 						prevPosBelow=belowObj.transform.position;
 					}
 					
-					if(hit.distance<distance){
-						transform.position+=new Vector3(0,distance-hit.distance,0);
-					}
+					
 				
 					
 				//}

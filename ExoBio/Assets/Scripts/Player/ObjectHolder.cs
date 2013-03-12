@@ -58,8 +58,9 @@ public class ObjectHolder : MonoBehaviour {
 							
 							carryObj.transform.position-=0.5f*transform.up;
 							carryObj.transform.parent=transform;
-							
-							carryObj.rigidbody.velocity=Vector3.zero;
+							if(carryObj!=null && carryObj.rigidbody!=null && !carryObj.rigidbody.isKinematic){
+								carryObj.rigidbody.velocity=Vector3.zero;
+							}
 							carryObj.collider.enabled=false;
 							carryObj.rigidbody.useGravity=false;
 							carryObj.rigidbody.freezeRotation=true;

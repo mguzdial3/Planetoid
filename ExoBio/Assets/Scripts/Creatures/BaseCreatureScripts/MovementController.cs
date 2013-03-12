@@ -179,7 +179,7 @@ public class MovementController : MonoBehaviour {
 				transform.rotation = Quaternion.LookRotation(transform.forward, hit.normal);
 				falling=false;
 				if(hit.distance<(ourHeight/2)-0.1){
-					transform.position+=((ourHeight/2)-0.1f-hit.distance)*transform.up;
+					transform.position+=((ourHeight/2)-0.1f-hit.distance)*transform.up*Time.deltaTime*5;
 				}
 			}
 			else{

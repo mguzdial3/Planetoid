@@ -224,6 +224,7 @@ public class CreatureController : BasicCreature {
 				movementController.StopAnimations();
 				//Only stare for so long before running (0.5f seconds)
 				currentAction.genericVariable2+=Time.deltaTime;
+				currentState=STANDING;
 			}
 		}
 		else{
@@ -235,6 +236,8 @@ public class CreatureController : BasicCreature {
 				//Reset Creature Action variables
 				currentAction.genericVariable=0.0f;
 				currentAction.genericVariable2=0.0f;
+				
+				
 				
 				currentAction = new CreatureAction(RUNNINGAWAY, 0);
 				
