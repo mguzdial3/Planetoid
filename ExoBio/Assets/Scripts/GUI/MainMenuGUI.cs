@@ -29,7 +29,7 @@ public class MainMenuGUI : GUIScreen {
 	}
 	
 	void StartGame(){
-		TransitionGUI.SwitchLevel("SceneTest");
+		TransitionGUI.SwitchLevel("spaceship");
 		ScaleOut();
 	}
 	

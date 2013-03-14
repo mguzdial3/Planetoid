@@ -1,26 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GUI\SpaceShipGUI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GUI\Notification.cs">
     <Files>
-      <File FileName="..\..\..\Mermaids313\Mermaids Current Project\Assets\Scripts\GroupSystem\Clan.cs" Line="6" Column="19" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\GUI\TransitionGUI.cs" Line="18" Column="20" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\Goo\GooBranch.cs" Line="1" Column="1" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\General\Timer.cs" Line="34" Column="23" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\MermaidsGUI\PlayerCreationGUI.cs" Line="172" Column="43" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\MermaidsGUI\CreationGUIStarter.cs" Line="69" Column="64" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\Voting\VotingGUI.cs" Line="36" Column="27" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\GroupSystem\Player.cs" Line="20" Column="54" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\MermaidsGUI\FCTCreationGUI.cs" Line="211" Column="1" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\Voting\NewMemberVote.cs" Line="12" Column="1" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\Database\PlayerCharacterService.cs" Line="15" Column="3" />
-      <File FileName="..\..\..\..\Downloads\Mermaids_wAwesomeFish_2_13\Mermaids Current Project\Assets\Scripts\Database\BaseService.cs" Line="10" Column="1" />
-      <File FileName="Assets\Scripts\GUI\MainMenuGUI.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\TransitionGUI.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\RegisterGUI.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\PauseMenuGUI.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\LoginGUI.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\CreditsGUI.cs" Line="16" Column="1" />
-      <File FileName="Assets\Scripts\GUI\SpaceShipGUI.cs" Line="11" Column="3" />
+      <File FileName="Assets\Materials\SkyboxBlended.shader" Line="1" Column="24" />
+      <File FileName="Assets\Scripts\General\DayNightCycle.cs" Line="49" Column="24" />
+      <File FileName="Assets\Scripts\GUI\TransitionGUI.cs" Line="29" Column="37" />
+      <File FileName="Assets\Scripts\GUI\SpaceShipGUI.cs" Line="12" Column="29" />
+      <File FileName="Assets\Scripts\GUI\Notification.cs" Line="77" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

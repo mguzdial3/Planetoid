@@ -30,10 +30,6 @@ public class TransitionGUI : GUIScreen {
 		}
 	}
 	
-	void OnLevelWasLoaded(){
-		FadeOut();
-	}
-	
 	public static void SwitchLevel(string levelName){
 		TransitionGUI.levelName = levelName;
 		TransitionGUI.guiReference.FadeIn();
