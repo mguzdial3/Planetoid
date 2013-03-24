@@ -56,6 +56,10 @@
      <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\SleepHandler.cs" />
      <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\TestController.cs" />
      <Compile Include="Assets\Scripts\Creatures\FriendlyCreature\FriendlyCreatureController.cs" />
+     <Compile Include="Assets\Scripts\Creatures\Land Whale\WhaleController.cs" />
+     <Compile Include="Assets\Scripts\Creatures\Land Whale\WhaleMovementController.cs" />
+     <Compile Include="Assets\Scripts\Creatures\LovesPlayerCreature\LovesPlayerCreatureController.cs" />
+     <Compile Include="Assets\Scripts\Creatures\RidesOnWhaleCreature\RidingCreatureController.cs" />
      <Compile Include="Assets\Scripts\GUI\CreditsGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIScreen.cs" />
      <Compile Include="Assets\Scripts\GUI\LoginGUI.cs" />

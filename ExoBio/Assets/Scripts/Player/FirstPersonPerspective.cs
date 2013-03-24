@@ -45,7 +45,7 @@ public class FirstPersonPerspective : MonoBehaviour {
 		
 		
 		//Further left on screen
-		if(xMouseChange<-0.5f){
+		if(xMouseChange<-0.1f){
 		
 			Vector3 currRotation = transform.localEulerAngles;
 					
@@ -55,7 +55,7 @@ public class FirstPersonPerspective : MonoBehaviour {
 			
 			//displayMouse=prevMouse;
 		}
-		else if(xMouseChange>0.5f){
+		else if(xMouseChange>0.1f){
 			
 			Vector3 currRotation = transform.localEulerAngles;
 					
@@ -67,7 +67,7 @@ public class FirstPersonPerspective : MonoBehaviour {
 		}
 		//print("YMOUSE CHANGE: "+yMouseChange);
 		//Lower on the screen (Look Down)
-		if(yMouseChange>0.5f && (transform.localEulerAngles.x>yMinRotation || transform.localEulerAngles.x<200)){
+		if(yMouseChange>0.1f && (transform.localEulerAngles.x>yMinRotation || transform.localEulerAngles.x<200)){
 		//if(displayMouse.y<yMin && (transform.localEulerAngles.x>yMinRotation || transform.localEulerAngles.x<200)){
 			
 			Vector3 currRotation = transform.localEulerAngles;
@@ -79,7 +79,7 @@ public class FirstPersonPerspective : MonoBehaviour {
 			//displayMouse=prevMouse;
 		}
 		//Higher on screen
-		else if(yMouseChange<-0.5f && (transform.localEulerAngles.x<yMaxRotation || transform.localEulerAngles.x>300)){
+		else if(yMouseChange<-0.1f && (transform.localEulerAngles.x<yMaxRotation || transform.localEulerAngles.x>300)){
 		//else if(displayMouse.y>yMax && (transform.localEulerAngles.x<yMaxRotation || transform.localEulerAngles.x>300)){
 		
 			Vector3 currRotation = transform.localEulerAngles;

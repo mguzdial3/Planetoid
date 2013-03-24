@@ -55,7 +55,7 @@ public class PictureTaking : MonoBehaviour {
 			//print("I raycasted at: "+hit.transform.name);
 			
 			if(hit.collider.tag=="Creature"){
-				cameraMark.color= Color.red;
+				cameraMark.color= Color.green;
 			
 			}
 			else{
@@ -171,10 +171,10 @@ public class PictureTaking : MonoBehaviour {
 							float distance3D = (transform.position-bc.transform.position).magnitude;
 							
 							if(distance==0){
-								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.currentState*100);
+								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.getPoints()*100);
 							}
 							else{
-								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.currentState*100*(1.0f/distance));
+								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.getPoints()*100*(1.0f/distance));
 							}
 							
 							

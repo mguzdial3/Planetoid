@@ -4,12 +4,10 @@ using System.Collections;
 
 //MovementController controls the creature's overall movement
 //Needs to be attached to the highest level of the creature
-public class MovementController : MonoBehaviour {
+public class WhaleMovementController : MonoBehaviour {
 	//The height of the creature
 	public float ourHeight=1.4f;
 	
-	//tags this creature can move into
-	public string[] exceptions;
 	
 	//The legs (limbs that should animate while the creature is walking/moving
 	public Leg[] legs;
@@ -111,28 +109,22 @@ public class MovementController : MonoBehaviour {
 				if(Physics.Raycast(transform.position+transform.forward, difference, out hit, difference.magnitude*speed*Time.deltaTime)){
 					//Don't go there
 					//Stuck is the way to pass messages up to the place that's calling us
-					bool hitInExceptions=false;
+					stuck=true;
+				}
+				else{
 					
-					foreach(string exception in exceptions){
-						if(exception.Equals(hit.collider.tag)){
-							hitInExceptions=true;
+					Vector3 newPosition = transform.position+(difference*speed*Time.deltaTime);
+					
+					if(Physics.Raycast(newPosition, Vector3.down, out hit, transform.localScale.y*10)){
+						//Only move there if there's water there
+						if(hit.collider.tag=="Water"){
+							transform.position+=Time.deltaTime*difference*speed;
 						}
 					}
 					
-					if(hitInExceptions){
-						transform.position+=Time.deltaTime*difference*speed;
-						MoveYourLegs();
-					}
-					else{
-						stuck=true;
-					}
-				}
-				else{
-				
-					transform.position+=Time.deltaTime*difference*speed;
-					
 					//Move your legs, we got a place to go to!
-					MoveYourLegs();
+					//WARNING: DON'T MOVE YOUR LEGS
+					//MoveYourLegs();
 				}
 			}
 			else{
