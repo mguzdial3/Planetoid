@@ -13,7 +13,7 @@ public class CreatureController : BasicCreature {
 	
 	
 	//List of Behaviors/Actions for this creature
-	private Dictionary<string, CreatureAction> behaviors;
+	public Dictionary<string, CreatureAction> behaviors;
 	
 	public EatingHandler eatingHandler;
 	
@@ -21,19 +21,19 @@ public class CreatureController : BasicCreature {
 	//Energy is used to determine if we need to eat or sleep more
 	private float energy=3000;
 	//The maxEnergy of the thing, set in start
-	private float maxEnergy;
+	public float maxEnergy;
 	//Point at which the creature will need to sleep
 	public float sleepEnergyPoint = 20;
 	
 	//Amount it will wander from it's home location if it doesn't have anything to do
 	public float wanderAmount = 10;
 	//Home location: Where it starts
-	private Vector3 homeLocation;
+	public Vector3 homeLocation;
 	
 	//The Number of things this creature can be aware of at once
 	public int numberOfObjectsThisCreatureCanThinkAbout=10;
 	//Dictionary of GameObjects to time remaining to remember it values
-	private Dictionary<GameObject, float > memories;
+	public Dictionary<GameObject, float > memories;
 	private int numberOfMemories = 0;
 	public float howQuicklyDoIForgetStuff = 4.0f;
 	
@@ -201,9 +201,9 @@ public class CreatureController : BasicCreature {
 		}
 		
 		
-		if(distance<3 && (currentAction.genericVariable==0 || currentAction.genericVariable2>5.0f)){
+		if(distance<3 || ( currentAction.genericVariable2>2.0f)){
 			
-			if(currentAction.genericVariable2>5.0f){
+			if(currentAction.genericVariable2>2.0f){
 				currentAction.genericVariable=1;
 				if(movementController.MoveTowards(differenceToTarget+transform.position, 1.2f)){
 					//If we're ever there, if we ever get away from the thing, we're done running away
@@ -265,10 +265,10 @@ public class CreatureController : BasicCreature {
 		
 		
 		
-		if(distance>6){
+		if(distance>3){
 			movementController.MoveTowards(buddy.transform.position,0.1f);
 		}
-		else if(distance>2){
+		else if(distance>1){
 			//Just hang out
 			movementController.StopAnimations();
 			movementController.TurnToFace(buddy.transform.position);
@@ -282,7 +282,7 @@ public class CreatureController : BasicCreature {
 		else{
 			differenceToTarget*=-1;
 			
-			if(differenceToTarget.magnitude!=0){
+			if(differenceToTarget.magnitude>0.5f){
 				movementController.MoveTowards(differenceToTarget+transform.position,0.1f);
 			}
 			else{
@@ -354,6 +354,8 @@ public class CreatureController : BasicCreature {
 					if(target==null){
 						target=c.gameObject;
 						currentAction=behaviors[c.name];
+						currentAction.genericVariable=0;
+						currentAction.genericVariable2=0;
 						currentState = behaviors[c.name].actionStrategy;
 					}
 					else{
@@ -362,6 +364,8 @@ public class CreatureController : BasicCreature {
 							//Set as new target
 							target=c.gameObject;
 							currentAction=behaviors[c.name];
+							currentAction.genericVariable=0;
+							currentAction.genericVariable2=0;
 							currentState = behaviors[c.name].actionStrategy;
 						}
 					}
@@ -387,11 +391,15 @@ public class CreatureController : BasicCreature {
 				if(target==null){
 					target=obj;
 					currentAction=behaviors[obj.name];
+					currentAction.genericVariable=0;
+					currentAction.genericVariable2=0;
 					currentState = behaviors[obj.name].actionStrategy;
 				}
 				else if(currentAction.actionScore<behaviors[obj.name].actionScore){
 					target=obj;
 					currentAction=behaviors[obj.name];
+					currentAction.genericVariable=0;
+					currentAction.genericVariable2=0;
 					currentState = behaviors[obj.name].actionStrategy;
 				}
 			}

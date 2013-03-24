@@ -55,13 +55,18 @@
      <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\MovementController.cs" />
      <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\SleepHandler.cs" />
      <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\TestController.cs" />
+     <Compile Include="Assets\Scripts\Creatures\FriendlyCreature\FriendlyCreatureController.cs" />
      <Compile Include="Assets\Scripts\GUI\CreditsGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIScreen.cs" />
      <Compile Include="Assets\Scripts\GUI\LoginGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\MainMenuGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\Notification.cs" />
      <Compile Include="Assets\Scripts\GUI\PauseMenuGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\RegisterGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\Sprite.cs" />
+     <Compile Include="Assets\Scripts\GUI\SpriteAnimation.cs" />
      <Compile Include="Assets\Scripts\GUI\TransitionGUI.cs" />
+     <Compile Include="Assets\Scripts\General\DayNightCycle.cs" />
      <Compile Include="Assets\Scripts\General\Timer.cs" />
      <Compile Include="Assets\Scripts\PickupableObject.cs" />
      <Compile Include="Assets\Scripts\Player\CameraControl.cs" />
@@ -76,6 +81,7 @@
      <Compile Include="Assets\Scripts\Wave.cs" />
      <Compile Include="Assets\Scripts\WaveY.cs" />
      <Compile Include="Assets\Scripts\WaypointFollower.cs" />
+     <None Include="Assets\Materials\SkyboxBlended.shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
  <Reference Include="Library\ScriptAssemblies\Assembly-UnityScript-firstpass">

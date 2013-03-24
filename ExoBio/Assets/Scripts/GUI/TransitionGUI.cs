@@ -9,9 +9,8 @@ public class TransitionGUI : GUIScreen {
 	static TransitionGUI guiReference;
 	
 	// Use this for initialization
-	protected override void Start () {
+	void Start () {
 		depth = 0;
-		base.Start();
 //		DontDestroyOnLoad(this.gameObject);
 		guiReference = this;
 		blackTex = new Texture2D(1,1);
@@ -22,17 +21,13 @@ public class TransitionGUI : GUIScreen {
 	}
 	
 	protected override void DrawGUI (){
-		GUI.DrawTexture(new Rect(0,0, Screen.width, Screen.height), blackTex,ScaleMode.StretchToFill);
+		GUI.DrawTexture(new Rect(0,0, targetWidth, targetHeight), blackTex,ScaleMode.StretchToFill);
 	}
 	
 	void Update(){
 		if (switchingLevel && transitionTimer.IsFinished()){
 			Application.LoadLevel(levelName);
 		}
-	}
-	
-	void OnLevelWasLoaded(){
-		FadeOut();
 	}
 	
 	public static void SwitchLevel(string levelName){

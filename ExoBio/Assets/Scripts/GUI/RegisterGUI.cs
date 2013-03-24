@@ -10,9 +10,8 @@ public class RegisterGUI : GUIScreen {
 	string password = "";
 	string passwordConfirm = "";
 	
-	protected override void Start ()
+	void Start ()
 	{
-		base.Start ();
 		width = 400;
 		height = 220;
 		buttonWidth = 100f;
@@ -22,7 +21,7 @@ public class RegisterGUI : GUIScreen {
 	
 	protected override void DrawGUI(){
 		GUI.skin = skin;
-		GUI.BeginGroup(new Rect(Screen.width/2f - width/2f, Screen.height/2f - height/2f, width, height));
+		GUI.BeginGroup(new Rect(targetWidth/2f - width/2f, targetHeight/2f - height/2f, width, height));
 		GUI.Box(new Rect(0,0,width, height), "");
 
 		GUI.Label(new Rect(width/2 - 200f, 0f, 400f, 70), "New Account", skin.customStyles[0]);

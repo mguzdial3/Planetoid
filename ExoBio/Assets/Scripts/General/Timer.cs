@@ -13,7 +13,7 @@ public class Timer {
 	
 	public bool IsFinished(){
 		if (!stopped){
-			if (Time.time > startTime + timerInterval){
+			if (Time.realtimeSinceStartup > startTime + timerInterval){
 				if (repeating)
 					Restart(); //automatically restart timer when it's found to be over
 				else {
@@ -35,13 +35,17 @@ public class Timer {
 	}
 	
 	public float Percent(){
-		percentDone = (Time.time - startTime)/timerInterval;
+		percentDone = Mathf.Clamp01((Time.realtimeSinceStartup - startTime)/timerInterval);
 		return percentDone;
 	}	
 	
 	public void Restart(){
-		startTime = Time.time;
+		startTime = Time.realtimeSinceStartup;
 		Start();
+	}
+	
+	public bool IsStopped(){
+		return stopped;	
 	}
 
 	public void Stop(){

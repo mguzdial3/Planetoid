@@ -9,8 +9,7 @@ public class LoginGUI : GUIScreen {
 	string username = "";
 	string password = "";
 	
-	protected override void Start (){
-		base.Start ();
+	void Start (){
 		width = 400;
 		height = 200;
 		buttonWidth = 100f;
@@ -22,7 +21,7 @@ public class LoginGUI : GUIScreen {
 	
 	protected override void DrawGUI(){
 		GUI.skin = skin;
-		GUI.BeginGroup(new Rect(Screen.width/2f - width/2f, Screen.height/2f - height/2f, width, height));
+		GUI.BeginGroup(new Rect(targetWidth/2f - width/2f, targetHeight/2f - height/2f, width, height));
 		GUI.Box(new Rect(0,0,width, height), "");
 		GUI.Label(new Rect(width/2 - 200f, 0f, 400f, 70), "Alien Game", skin.customStyles[0]);
 		GUI.Label(new Rect(width/2 - 105f, 70, 100f, 25f), "Username: ");
