@@ -26,7 +26,7 @@ public class Timer {
 			}
 		}
 		else{
-			return true;	
+			return false;	
 		}
 	}
 	

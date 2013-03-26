@@ -42,7 +42,6 @@ public class Notification : GUIScreen {
 	public void Timeout(float time){
 		timeoutTime = time;
 		timeout = new Timer(timeoutTime);
-		print (time);
 	}
 	
 	public static void Notify(string title, string content, Dictionary<string, buttonAction> buttons, float timeout = 0f){

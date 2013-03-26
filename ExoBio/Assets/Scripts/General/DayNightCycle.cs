@@ -34,7 +34,9 @@ public class DayNightCycle : MonoBehaviour {
 	
 	void Update(){
 		if (restartScene.IsFinished()){
-			TransitionGUI.SwitchLevel("spaceship");
+			TransitionGUI.SwitchLevel("review");
+			PictureTaking picture = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<PictureTaking>();
+			DataHolder.AddPictures(picture.textures, picture.scores);
 			this.enabled = false;
 		}
 		TimeNotifications();
@@ -44,7 +46,7 @@ public class DayNightCycle : MonoBehaviour {
 	}
 	
 	void TimeNotifications(){
-		if (restartScene.Percent() > .8 && !lateNotified){
+		if (restartScene.Percent() > .9 && !lateNotified){
 			Notification.Notify("Boss", "It's getting late, you better wrap up soon!", new Dictionary<string, Notification.buttonAction>(), 4f);
 			lateNotified = true;
 		}

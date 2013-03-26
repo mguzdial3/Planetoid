@@ -4,18 +4,22 @@ using System.Collections;
 public abstract class GUIScreen : MonoBehaviour {
 	
 	bool fadeOut, fadeIn, scaling, wrapUp, wrapDown, moving;
-	protected float targetWidth = 1920;
-	protected float targetHeight = 1080;
+	protected static float targetWidth = 1920;
+	protected static float targetHeight = 1080;
 	protected bool displayed = false;
 	protected bool persist = false;
+	protected static bool letterBoxing = false;
 	protected Timer transitionTimer;
 	float transitionTime = .3f;
 	float alpha = 1f;
 	protected int depth = 100;
 	Matrix4x4 screenTransform;
-	Vector3 scalingTransform, resolutionTransform, wrappingTransform, movingTransform, currentMove, moveGoal;
+	protected static Vector3 resolutionTransform;
+	Vector3 scalingTransform, wrappingTransform, movingTransform, currentMove, moveGoal;
 	Quaternion rotatingTransform;
 	Rect bounds;
+	protected static Rect screenBounds, letterBox1, letterBox2;
+	protected static Texture2D letterBox;
 
 	// Use this for initialization
 	protected virtual void Awake (){
@@ -24,11 +28,41 @@ public abstract class GUIScreen : MonoBehaviour {
 		rotatingTransform = Quaternion.identity;
 		transitionTimer = new Timer(transitionTime);
 		screenTransform = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(1f, 1f, 1f));
-		resolutionTransform = new Vector3(Screen.width/targetWidth, Screen.height/targetHeight, 1f);
-//		resolutionTransform = Vector3.one;
+		if (!letterBoxing){
+			screenBounds = new Rect(0,0, GUIScreen.targetWidth, GUIScreen.targetHeight);
+			GUIScreen.resolutionTransform = new Vector3(Screen.width/GUIScreen.targetWidth, Screen.height/GUIScreen.targetHeight, 1f);
+		}
 	}
+	
+	protected static void useLetterBox(){
+		GUIScreen.letterBox = new Texture2D(1,1);
+		GUIScreen.letterBox.SetPixel(0,0, Color.black);
+		GUIScreen.letterBox.Apply();
+		float ratio = Screen.width/GUIScreen.targetWidth;
+		bool width = true;
+		if (ratio > Screen.height/GUIScreen.targetHeight){
+			width = false;
+			ratio = Screen.height/GUIScreen.targetHeight;
+		}
+		GUIScreen.screenBounds = new Rect((Screen.width/ratio - GUIScreen.targetWidth)/2f,(Screen.height/ratio - GUIScreen.targetHeight)/2f,GUIScreen.targetWidth, GUIScreen.targetHeight);
+		if (!width){
+			GUIScreen.letterBox1 = new Rect(0,0,(Screen.width - GUIScreen.targetWidth*ratio)/2f, Screen.height);
+			GUIScreen.letterBox2 = new Rect((Screen.width - GUIScreen.targetWidth*ratio)/2f + targetWidth*ratio,0,(Screen.width - GUIScreen.targetWidth*ratio)/2f, Screen.height);
+		}
+		else{
+			GUIScreen.letterBox1 = new Rect(0,0,Screen.width, (Screen.height - GUIScreen.targetHeight*ratio)/2f+1);
+			GUIScreen.letterBox2 = new Rect(0,(Screen.height - GUIScreen.targetHeight*ratio)/2f + GUIScreen.targetHeight*ratio,Screen.width, (Screen.height - GUIScreen.targetHeight*ratio)/2f);
+		}
+		GUIScreen.resolutionTransform = new Vector3(ratio, ratio, 1f);
+		GUIScreen.letterBoxing = true;
+	}
+			
 
 	void OnGUI(){
+		if (GUIScreen.letterBoxing){
+			GUI.DrawTexture(GUIScreen.letterBox1, GUIScreen.letterBox);
+			GUI.DrawTexture(GUIScreen.letterBox2, GUIScreen.letterBox);
+		}
 		if (displayed){
 			GUI.depth = depth;
 			GUI.matrix = screenTransform;
@@ -82,7 +116,9 @@ public abstract class GUIScreen : MonoBehaviour {
 				}
 			}
 			screenTransform = Matrix4x4.TRS(new Vector3(movingTransform.x * resolutionTransform.x, movingTransform.y * resolutionTransform.y, 0f), rotatingTransform, new Vector3(scalingTransform.x * wrappingTransform.x * resolutionTransform.x, scalingTransform.y * wrappingTransform.y * resolutionTransform.y, 1f));
+			GUI.BeginGroup(GUIScreen.screenBounds);
 			DrawGUI();
+			GUI.EndGroup();
 		}
 	}
 	

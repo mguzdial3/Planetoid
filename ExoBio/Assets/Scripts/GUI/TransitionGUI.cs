@@ -8,10 +8,9 @@ public class TransitionGUI : GUIScreen {
 	static string levelName;
 	static TransitionGUI guiReference;
 	
-	// Use this for initialization
 	void Start () {
 		depth = 0;
-//		DontDestroyOnLoad(this.gameObject);
+		useLetterBox();
 		guiReference = this;
 		blackTex = new Texture2D(1,1);
 		blackTex.SetPixel(0,0,Color.black);
@@ -21,7 +20,7 @@ public class TransitionGUI : GUIScreen {
 	}
 	
 	protected override void DrawGUI (){
-		GUI.DrawTexture(new Rect(0,0, targetWidth, targetHeight), blackTex,ScaleMode.StretchToFill);
+		GUI.DrawTexture(new Rect(0,0, GUIScreen.targetWidth, GUIScreen.targetHeight), blackTex);
 	}
 	
 	void Update(){
