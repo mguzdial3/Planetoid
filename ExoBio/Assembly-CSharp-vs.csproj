@@ -1,101 +1,3 @@
-<<<<<<< HEAD
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<ProductVersion>10.0.20506</ProductVersion>
-	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{835C8085-5B42-11A7-3D2F-D33B9EFD1384}</ProjectGuid>
-	<OutputType>Library</OutputType>
-	<AppDesignerFolder>Properties</AppDesignerFolder>
-	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
-	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	<DebugSymbols>true</DebugSymbols>
-	<DebugType>full</DebugType>
-	<Optimize>false</Optimize>
-	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_WEBPLAYER;WEBPLUG;ENABLE_MICROPHONE;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;ENABLE_AUDIO_FMOD;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PHYSICS;ENABLE_TERRAIN;ENABLE_CACHING;ENABLE_SUBSTANCE;ENABLE_GENERICS;ENABLE_CLOTH;ENABLE_MOVIES;ENABLE_AUDIO;ENABLE_WWW;ENABLE_SHADOWS;ENABLE_DUCK_TYPING;UNITY_4_1_0;UNITY_4_1;ENABLE_PROFILER;UNITY_EDITOR</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	<DebugType>pdbonly</DebugType>
-	<Optimize>true</Optimize>
-	<OutputPath>Temp\bin\Release\</OutputPath>
-	<DefineConstants>TRACE</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
-  </PropertyGroup>
-  <ItemGroup>
-	<Reference Include="System" />
-    <Reference Include="System.XML" />
-	<Reference Include="System.Core" />
-	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity35/Editor/Data/Managed/UnityEngine.dll</HintPath>
-	</Reference>
-	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity35/Editor/Data/Managed/UnityEditor.dll</HintPath>
-	</Reference>
-  </ItemGroup>
-  <ItemGroup>
-     <Compile Include="Assets\Scripts\BasicEnemy.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\BasicCreature.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\CreatureAction.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\CreatureController.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\EatingHandler.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\HangingOutHandler.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\Leg.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\Memory.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\MovementController.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\SleepHandler.cs" />
-     <Compile Include="Assets\Scripts\Creatures\BaseCreatureScripts\TestController.cs" />
-     <Compile Include="Assets\Scripts\Creatures\FriendlyCreature\FriendlyCreatureController.cs" />
-     <Compile Include="Assets\Scripts\Creatures\Land Whale\WhaleController.cs" />
-     <Compile Include="Assets\Scripts\Creatures\Land Whale\WhaleMovementController.cs" />
-     <Compile Include="Assets\Scripts\Creatures\LovesPlayerCreature\LovesPlayerCreatureController.cs" />
-     <Compile Include="Assets\Scripts\Creatures\RidesOnWhaleCreature\RidingCreatureController.cs" />
-     <Compile Include="Assets\Scripts\GUI\CreditsGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\GUIScreen.cs" />
-     <Compile Include="Assets\Scripts\GUI\LoginGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\MainMenuGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\Notification.cs" />
-     <Compile Include="Assets\Scripts\GUI\PauseMenuGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\PopupGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\RegisterGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\ReviewGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\SpaceShipGUI.cs" />
-     <Compile Include="Assets\Scripts\GUI\Sprite.cs" />
-     <Compile Include="Assets\Scripts\GUI\SpriteAnimation.cs" />
-     <Compile Include="Assets\Scripts\GUI\TransitionGUI.cs" />
-     <Compile Include="Assets\Scripts\General\DataHolder.cs" />
-     <Compile Include="Assets\Scripts\General\DayNightCycle.cs" />
-     <Compile Include="Assets\Scripts\General\Timer.cs" />
-     <Compile Include="Assets\Scripts\PickupableObject.cs" />
-     <Compile Include="Assets\Scripts\Player\CameraControl.cs" />
-     <Compile Include="Assets\Scripts\Player\CharacterMotion.cs" />
-     <Compile Include="Assets\Scripts\Player\FirstPersonPerspective.cs" />
-     <Compile Include="Assets\Scripts\Player\ForceUpdate.cs" />
-     <Compile Include="Assets\Scripts\Player\ObjectHolder.cs" />
-     <Compile Include="Assets\Scripts\Player\PictureTaking.cs" />
-     <Compile Include="Assets\Scripts\Player\ScreenShot.cs" />
-     <Compile Include="Assets\Scripts\TentacleBit.cs" />
-     <Compile Include="Assets\Scripts\TestCreature.cs" />
-     <Compile Include="Assets\Scripts\Wave.cs" />
-     <Compile Include="Assets\Scripts\WaveY.cs" />
-     <Compile Include="Assets\Scripts\WaypointFollower.cs" />
-     <None Include="Assets\Materials\SkyboxBlended.shader" />
-     <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
-     <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
- <Reference Include="Assembly-UnityScript-firstpass">
- <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
-=======
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
@@ -165,10 +67,14 @@
      <Compile Include="Assets\Scripts\GUI\MainMenuGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\Notification.cs" />
      <Compile Include="Assets\Scripts\GUI\PauseMenuGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\PopupGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\RegisterGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\ReviewGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\SpaceShipGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\Sprite.cs" />
      <Compile Include="Assets\Scripts\GUI\SpriteAnimation.cs" />
      <Compile Include="Assets\Scripts\GUI\TransitionGUI.cs" />
+     <Compile Include="Assets\Scripts\General\DataHolder.cs" />
      <Compile Include="Assets\Scripts\General\DayNightCycle.cs" />
      <Compile Include="Assets\Scripts\General\Timer.cs" />
      <Compile Include="Assets\Scripts\PickupableObject.cs" />
@@ -190,7 +96,6 @@
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
  <Reference Include="Library\ScriptAssemblies\Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
->>>>>>> All 7 creatures in build
  </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -76,7 +76,7 @@ public class SpaceShipGUI : GUIScreen {
 		PowerUpPanel();
 		
 		if (GUI.Button(new Rect(targetWidth/2f + 15, 800, 500, 200), "Leave Ship")){
-			TransitionGUI.SwitchLevel("SceneTest 1");
+			TransitionGUI.SwitchLevel("SceneTest-With Creatures");
 		}
 	}
 	

@@ -1,22 +1,5 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-<<<<<<< HEAD
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GUI\SpaceShipGUI.cs">
-    <Files>
-      <File FileName="Assets\Scripts\General\DataHolder.cs" Line="26" Column="1" />
-      <File FileName="Assets\Scripts\Creatures\FriendlyCreature\FriendlyCreatureController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Creatures\BaseCreatureScripts\MovementController.cs" Line="124" Column="22" />
-      <File FileName="Assets\Scripts\GUI\Notification.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\General\Timer.cs" Line="29" Column="16" />
-      <File FileName="Assets\Scripts\General\DayNightCycle.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player\FirstPersonPerspective.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Creatures\Land Whale\WhaleMovementController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Creatures\Land Whale\WhaleController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Creatures\LovesPlayerCreature\LovesPlayerCreatureController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Creatures\BaseCreatureScripts\BasicCreature.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player\PictureTaking.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\SpaceShipGUI.cs" Line="79" Column="42" />
-=======
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Creatures/BullGuy/BullGuyController.cs">
     <Files>
       <File FileName="../../Documents/ExoBio 2/Assets/Scripts/Creatures/BaseCreatureScripts/MovementController.cs" Line="18" Column="9" />
@@ -28,14 +11,15 @@
       <File FileName="Assets/Scripts/General/Timer.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/DayNightCycle.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Player/FirstPersonPerspective.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Creatures/Land Whale/WhaleMovementController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Creatures/Land Whale/WhaleMovementController.cs" Line="58" Column="7" />
       <File FileName="Assets/Scripts/Creatures/Land Whale/WhaleController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Creatures/BaseCreatureScripts/BasicCreature.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Player/PictureTaking.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Creatures/RidesOnWhaleCreature/RidingCreatureController.cs" Line="45" Column="20" />
-      <File FileName="Assets/Scripts/Creatures/BullGuy/BullGuyController.cs" Line="29" Column="4" />
+      <File FileName="Assets/Scripts/Creatures/RidesOnWhaleCreature/RidingCreatureController.cs" Line="1" Column="19" />
+      <File FileName="Assets/Scripts/Creatures/BullGuy/BullGuyController.cs" Line="38" Column="24" />
       <File FileName="Assets/Scripts/Creatures/LovesPlayerCreature/LovesPlayerCreatureController.cs" Line="11" Column="21" />
->>>>>>> All 7 creatures in build
+      <File FileName="Assets/Scripts/TimedForce.cs" Line="19" Column="4" />
+      <File FileName="../../AttackOfTheCubes/Assets/Scripts/Guns/TimedForce.cs" Line="115" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
