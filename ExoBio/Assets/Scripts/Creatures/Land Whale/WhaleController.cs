@@ -81,7 +81,7 @@ public class WhaleController : BasicCreature {
 			else if(target==gameObject){
 				//If we've got a good amount of energy, just go some place if active type, otherwise, just wait	
 				if(energy>sleepEnergyPoint && goal.magnitude==0){
-					goal = homeLocation + new Vector3(Random.Range(-wanderAmount, wanderAmount), 0, Random.Range(-wanderAmount, wanderAmount));
+					goal = homeLocation + new Vector3(Random.Range(-1*wanderAmount, wanderAmount)*10, 0, Random.Range(-wanderAmount, wanderAmount)*10);
 				}
 				else if(energy<=sleepEnergyPoint){
 					//GO TO SLEEP
@@ -182,113 +182,7 @@ public class WhaleController : BasicCreature {
 	
 	//Running Away (This thing could be located anywhere)
 	//Using the second variable as a timer, use the first variable as a boolean
-	private void RunningAway( GameObject target){
-		
-		Vector3 differenceToTarget = target.transform.position-transform.position;
-		
-		float distance =differenceToTarget.magnitude;
-		
-		//Reverse, because we're RUNNING AWAY
-		differenceToTarget*=-1;
-		differenceToTarget.Normalize();
-		differenceToTarget*=safeDistance;
-		
-		float mvmtSpeed = 1.2f;
-		
-		if(energy<0){
-			mvmtSpeed/=Mathf.Abs(energy);
-		}
-		
-		
-		if(distance<3 || ( currentAction.genericVariable2>2.0f)){
-			
-			if(currentAction.genericVariable2>2.0f){
-				currentAction.genericVariable=1;
-				if(movementController.MoveTowards(differenceToTarget+transform.position, 1.2f)){
-					//If we're ever there, if we ever get away from the thing, we're done running away
-					target=null;
-					currentAction = new CreatureAction(RUNNINGAWAY, 0);
-				}
-				else{
-					energy-=10*Time.deltaTime;
-				}
-			}
-			else{
-				currentAction.genericVariable2+=Time.deltaTime;
-			}
-		}
-		else if(currentAction.genericVariable==0){
-			//Look at it
-			if(movementController.TurnToFace(target.transform.position)){
-				movementController.StopAnimations();
-				//Only stare for so long before running (0.5f seconds)
-				currentAction.genericVariable2+=Time.deltaTime;
-				currentState=STANDING;
-			}
-		}
-		else{
-			//You got too close once, it's time to run away
-			if(movementController.MoveTowards(transform.position+differenceToTarget, 1.2f)){
-				//If we're ever there, if we ever get away from the thing, we're done running away
-				target=null;
-				
-				//Reset Creature Action variables
-				currentAction.genericVariable=0.0f;
-				currentAction.genericVariable2=0.0f;
-				
-				
-				
-				currentAction = new CreatureAction(RUNNINGAWAY, 0);
-				
-				
-			}
-			else{
-				energy-=10*Time.deltaTime;
-			}
-		}
-		
-		//If totally exhausted
-		if(energy<-100){
-			setUpSleep();
-		}
-		
-	}
 	
-	//Hang Out With
-	private void HangOutWith(GameObject buddy){
-		Vector3 differenceToTarget = target.transform.position-transform.position;
-		float distance =differenceToTarget.magnitude;
-		
-		
-		
-		
-		
-		
-		if(distance>3){
-			movementController.MoveTowards(buddy.transform.position,0.1f);
-		}
-		else if(distance>1){
-			//Just hang out
-			movementController.StopAnimations();
-			movementController.TurnToFace(buddy.transform.position);
-			//print("HANGING");
-			
-			
-			
-			
-			
-		}
-		else{
-			differenceToTarget*=-1;
-			
-			if(differenceToTarget.magnitude>0.5f){
-				movementController.MoveTowards(differenceToTarget+transform.position,0.1f);
-			}
-			else{
-				movementController.MoveTowards(homeLocation,0.1f);
-			}
-		}
-	}
 	
 	//Eating
 	private void Eat(GameObject food){
@@ -422,18 +316,7 @@ public class WhaleController : BasicCreature {
 		goal=Vector3.zero;
 	}
 	
-	public override void Pet ()
-	{
-		base.Pet ();
-		//Less likely to run away
-		if(behaviors["First Person Controller"].actionScore>0){
-			behaviors["First Person Controller"].actionScore-=0.1f;
-		}
-		else{
-			//Change to like the player a lot
-			behaviors["First Person Controller"] = new CreatureAction(1.0f,0.3f, HangOutWith);
-		}
-	}
+
 	
 	
 }

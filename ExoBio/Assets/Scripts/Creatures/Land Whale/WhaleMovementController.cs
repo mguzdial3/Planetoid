@@ -43,23 +43,28 @@ public class WhaleMovementController : MonoBehaviour {
 	
 	//Returns true if facing
 	public bool TurnToFace(Vector3 goal){
+		//print("Turning to face");
 		goal.y=transform.position.y;
 		Vector3 difference = goal-transform.position;
 		difference.Normalize();
 		
-		if((difference-transform.forward).magnitude>0.1f){
+		if((difference-transform.forward).magnitude>1.0f){
 			float angleBetween = Vector3.Angle(difference,transform.forward);
 			
 			
 			Vector3 levelGoal = new Vector3(goal.x,transform.position.y,goal.z);
 			
 			if(!(levelGoal-transform.position).Equals(Vector3.zero)){
+				//print("Should be rotating");
 				Quaternion targetRotation = (Quaternion.LookRotation((levelGoal-transform.position)));
-			
-			
-				transform.rotation = Quaternion.Slerp(transform.rotation,targetRotation,Time.deltaTime*5.0f);
 				
-				MoveYourLegs();
+			
+				transform.rotation = Quaternion.Slerp(transform.rotation,targetRotation,Time.deltaTime*0.01f);
+				
+				//MoveYourLegs();
+			}
+			else{
+				return true;
 			}
 			return false;
 			
@@ -81,10 +86,11 @@ public class WhaleMovementController : MonoBehaviour {
 	 * Return: Whether or not we reached our goal
 	*/
 	public virtual bool MoveTowards(Vector3 goal, float distance){
-		
+		//print("Moving Towards");
 		bool facingGoal = TurnToFace(goal);
 		
 		if(facingGoal){
+			print("Moving Towards");
 			//don't want to be moving in the y direction
 			goal.y=transform.position.y;
 			//Difference between our position and the goal
@@ -115,13 +121,19 @@ public class WhaleMovementController : MonoBehaviour {
 					
 					Vector3 newPosition = transform.position+(difference*speed*Time.deltaTime);
 					
-					if(Physics.Raycast(newPosition, Vector3.down, out hit, transform.localScale.y*10)){
+					if(Physics.Raycast(newPosition, -1*transform.up, out hit, 46.0f)){
 						//Only move there if there's water there
+					
+						print("Hit collider: "+hit.collider.name);
 						if(hit.collider.tag=="Water"){
 							transform.position+=Time.deltaTime*difference*speed;
 						}
+						else{
+							stuck=true;
+						}
 					}
 					
+					//transform.position+=Time.deltaTime*difference*speed;
 					//Move your legs, we got a place to go to!
 					//WARNING: DON'T MOVE YOUR LEGS
 					//MoveYourLegs();
@@ -133,7 +145,7 @@ public class WhaleMovementController : MonoBehaviour {
 				return true;
 			}
 			
-			GroundedCheck();
+			//GroundedCheck();
 			//StopAnimations();
 			return false;
 		}
