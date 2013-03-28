@@ -21,6 +21,7 @@ public class DataHolder : MonoBehaviour {
 	}
 	
 	public static void AddPictures(ArrayList textures, int[] scores){
+		DataHolder.pictures.Clear();
 		int i = 0;
 		foreach(Object o in textures){
 			DataHolder.pictures.Add(o as Texture2D,scores[i]);

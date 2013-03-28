@@ -84,6 +84,7 @@ public class PictureTaking : MonoBehaviour {
 				RaycastHit[] hits = Physics.SphereCastAll(transform.position, 10.0f, transform.forward, 100.0f);
 				
 				audio.PlayOneShot(cameraNoise);
+				CameraGUI.Snap();
 				int scoreForDis=determineScore(hits);
 				
 				scores[count] = scoreForDis;

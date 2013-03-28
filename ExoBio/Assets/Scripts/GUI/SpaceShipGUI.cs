@@ -11,6 +11,7 @@ public class SpaceShipGUI : GUIScreen {
 	Timer experienceTimer;
 	Texture2D blackTex;
 	string[] items;
+	Vector2 itemScroll = Vector2.zero;
 	
 	void Start () {
 		FadeIn();
@@ -19,7 +20,7 @@ public class SpaceShipGUI : GUIScreen {
 		blackTex.Apply();
 		currentRank = GetRank(DataHolder.currentScore);
 		newRank = NextRank(currentRank);
-		items = new string[]{"Super Shoes","Zoom Lens","Flash Light"};
+		items = new string[]{"None"};
 		
 		experience = DataHolder.totalScore;
 		print (DataHolder.currentScore);
@@ -157,7 +158,15 @@ public class SpaceShipGUI : GUIScreen {
 		
 		// List Container
 		GUI.Box(new Rect(50,90,400,350),"");
-		GUI.SelectionGrid(new Rect(50,90,400,350), 0, items,1);
+		GUILayout.BeginArea(new Rect(50,90,400,350));
+		itemScroll = GUILayout.BeginScrollView(itemScroll, GUILayout.Width(400), GUILayout.Height(350));
+		GUILayout.BeginVertical();
+		foreach (string item in items){
+			GUILayout.Label(item);
+		}
+		GUILayout.EndVertical();
+		GUILayout.EndScrollView();
+		GUILayout.EndArea();
 		GUI.EndGroup();
 	}
 }
