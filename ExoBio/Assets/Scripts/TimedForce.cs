@@ -33,7 +33,9 @@ public class TimedForce : MonoBehaviour {
 			RaycastHit hit;
 			pushedBackPos+=forceDirection*(forceMagnitude);
 			float distance =(applyForceTo.transform.position-pushedBackPos).magnitude;
-				
+			
+			applyForceTo.transform.position=pushedBackPos;	
+			/**
 			if( distance!=0 && Physics.Raycast(applyForceTo.transform.position,pushedBackPos, out hit, distance)){
 					if(hit.collider.tag=="NoCollision"){
 						applyForceTo.transform.position=pushedBackPos;	
@@ -48,7 +50,7 @@ public class TimedForce : MonoBehaviour {
 			else{
 				applyForceTo.transform.position=pushedBackPos;	
 			}
-			
+			*/
 			
 		}
 		

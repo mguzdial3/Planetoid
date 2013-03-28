@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BullGuyController : CreatureController {
-
+	public AudioClip charge;
+	
 	void Start(){
 		memories = new Dictionary<GameObject,float>();
 		behaviors = new Dictionary<string, CreatureAction>();
@@ -13,6 +14,8 @@ public class BullGuyController : CreatureController {
 		behaviors.Add("First Person Controller", new CreatureAction(STANDING, 0.4f, ThrowIntoAir));
 	}
 	
+	
+	
 	//Hang Out With
 	private void ThrowIntoAir(GameObject buddy){
 		Vector3 differenceToTarget = target.transform.position-transform.position;
@@ -20,17 +23,19 @@ public class BullGuyController : CreatureController {
 		
 		
 		
-		print("Distance: "+distance);
+		//print("Distance: "+distance);
 		
 		
 		if(distance>2){
 			movementController.MoveTowards(buddy.transform.position,0.05f);
 		}
 		else{
-			print("Ever getting to here");
+			
 			TimedForce hasForce = buddy.GetComponent<TimedForce>();
 			
 			if(hasForce==null){
+				audio.PlayOneShot(charge);
+				//Shoot player into air
 				
 				TimedForce tf = buddy.AddComponent<TimedForce>();
 				tf.forceDirection = transform.up+ transform.forward;

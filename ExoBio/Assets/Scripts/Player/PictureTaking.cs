@@ -15,6 +15,9 @@ public class PictureTaking : MonoBehaviour {
 	private int count = 0, maxNumberOfShots = 20;
 	
 	
+	//Sound for camera to make
+	public AudioClip cameraNoise;
+	
 	public GUITexture cameraMark;
 	
 	public bool rabbitPictureHave;
@@ -80,7 +83,7 @@ public class PictureTaking : MonoBehaviour {
 				//Figure out the score
 				RaycastHit[] hits = Physics.SphereCastAll(transform.position, 10.0f, transform.forward, 100.0f);
 				
-				
+				audio.PlayOneShot(cameraNoise);
 				int scoreForDis=determineScore(hits);
 				
 				scores[count] = scoreForDis;
