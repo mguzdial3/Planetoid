@@ -50,12 +50,14 @@ public class PictureTaking : MonoBehaviour {
 		Vector3 cameraEnd = transform.position;
 		cameraEnd+=transform.forward*100;
 		
-		Debug.DrawLine(transform.position,cameraEnd);
+		//Debug.DrawLine(transform.position,cameraEnd);
 		
 		 RaycastHit hit;
 		//Determine color of indicator, 100.0f is our range for now
-		if(Physics.Raycast(transform.position,transform.forward, out hit,100.0f)){
-			//print("I raycasted at: "+hit.transform.name);
+		//+ transform.up
+		Debug.DrawLine(transform.position , (transform.forward*(200)+transform.position+transform.up));
+		if(Physics.SphereCast(transform.position,1.0f,transform.forward, out hit,200.0f)){
+			print("I sphere raycasted at: "+hit.transform.name);
 			
 			if(hit.collider.tag=="Creature"){
 				cameraMark.color= Color.green;

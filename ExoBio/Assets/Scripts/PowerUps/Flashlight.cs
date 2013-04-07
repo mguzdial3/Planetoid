@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+//ATTACH TO MAIN 'eyes' CAMERA
 public class Flashlight : Powerup {
 	Light myLight;
 	
@@ -9,6 +10,7 @@ public class Flashlight : Powerup {
 		Setup();
 	}
 	
+	//Set up the Flash light
 	public override void Setup(){
 		myLight = gameObject.AddComponent<Light>();
 		myLight.type = LightType.Spot;
@@ -19,6 +21,7 @@ public class Flashlight : Powerup {
 		myLight.range = 50;
 	}
 	
+	//Turning off, turning on flashlight
 	void Update(){
 		if(Input.GetKeyDown(KeyCode.V)){
 			if(myLight.intensity ==0){

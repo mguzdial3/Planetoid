@@ -36,7 +36,7 @@ public class ObjectHolder : MonoBehaviour {
 				
 				// Debug.DrawLine(p2,playerRange*(look.transform.position-p2)+p2);
 				
-				Debug.DrawLine(transform.position, (transform.forward*7)+transform.position);
+				//Debug.DrawLine(transform.position, (transform.forward*7)+transform.position);
 				if(Physics.Raycast(transform.position, transform.forward, out hit, playerRange)){
 					//|| Physics.Raycast(transform.position, look.transform.position-transform.position, out hit, playerRange)){
 					
