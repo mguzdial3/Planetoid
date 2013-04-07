@@ -13,7 +13,7 @@ public class MainMenuGUI : GUIScreen {
 		height = 220;
 		buttonWidth = 100f;
 		buttonHeight = 50f;
-		FadeIn();
+		StartCoroutine(FadeIn());
 	}
 	
 	protected override void DrawGUI(){
@@ -30,11 +30,11 @@ public class MainMenuGUI : GUIScreen {
 	
 	void StartGame(){
 		TransitionGUI.SwitchLevel("spaceship");
-		ScaleOut();
+		StartCoroutine(ScaleOut());
 	}
 	
 	void Credits(){
-		this.gameObject.GetComponent<CreditsGUI>().ScaleIn();
-		ScaleOut();
-	}	
+		StartCoroutine(this.gameObject.GetComponent<CreditsGUI>().ScaleIn());
+		StartCoroutine(ScaleOut());
+	}
 }

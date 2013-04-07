@@ -34,7 +34,7 @@ public class DayNightCycle : MonoBehaviour {
 	
 	void Update(){
 		if (restartScene.IsFinished()){
-			TransitionGUI.SwitchLevel("review");
+			StartCoroutine(TransitionGUI.SwitchLevel("review"));
 			PictureTaking picture = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<PictureTaking>();
 			DataHolder.AddPictures(picture.textures, picture.scores);
 			this.enabled = false;

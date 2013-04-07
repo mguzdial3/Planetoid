@@ -20,7 +20,7 @@ public class PopupGUI : GUIScreen {
 		}
 		windowBounds = new Rect(targetWidth/2f - width/2f, targetHeight/2f - height/2f, width, height);
 		background = this.gameObject.AddComponent<LightsOff>();
-		MoveDown(new Rect(0,0,targetWidth, targetHeight), .7f);
+		StartCoroutine(MoveDown(new Rect(0,0,targetWidth, targetHeight), .7f));
 	}
 	
 	protected override void DrawGUI (){
@@ -39,8 +39,8 @@ public class PopupGUI : GUIScreen {
 	}
 	
 	void Close(){
-		WrapDown(new Rect(0,0,targetWidth,targetHeight),.3f);
-		this.background.FadeOut(.3f);
+		StartCoroutine(WrapDown(new Rect(0,0,targetWidth,targetHeight),.3f));
+		StartCoroutine(this.background.FadeOut(.3f));
 //		parent.MoveUp(new Rect(0,0,targetWidth, targetHeight), .7f);
 	}
 	

@@ -32,34 +32,24 @@ public class Notification : GUIScreen {
 		windowBounds = new Rect(targetWidth/2 - width/2, targetHeight - height - 50, width, height);
 //		test = new Sprite("testsprite", 32, 32);
 //		spriteAnimation = test.animations[0];
-		timeout = new Timer(timeoutTime);
-		if (timeoutTime <= 0){
-			timeout.Stop();	
-		}
-		WrapUp(windowBounds);
+		StartCoroutine(WrapUp(windowBounds));
 	}
 	
-	public void Timeout(float time){
+	public IEnumerator Timeout(float time){
 		timeoutTime = time;
-		timeout = new Timer(timeoutTime);
+		Timer timeout = new Timer(timeoutTime);
+		while (!timeout.IsFinished()){yield return 0;}
+		yield return StartCoroutine(Close());
 	}
 	
-	public static void Notify(string title, string content, Dictionary<string, buttonAction> buttons, float timeout = 0f){
-		if (Notification.notifier == null)
-		{
-			Notification.notifier = GameObject.FindGameObjectWithTag("GUIHandler").AddComponent<Notification>();
-			Notification.notifier.title = title;
-			Notification.notifier.content = content;
-			Notification.notifier.buttons = buttons;
-			Notification.notifier.Timeout(timeout);
-			Notification.notifier.Transition("Wrap", true);			
-		}
-		else if (Notification.notifier.displayed){
-			Notification.notifier.Transition("Wrap", false);
-			Notification.notifier.newMessage = true;
-			Notification.notifier.nextButtons = buttons;
-			Notification.notifier.nextTitle = title;
-			Notification.notifier.nextContent = content;			
+	public static IEnumerator Notify(string title, string content, Dictionary<string, buttonAction> buttons, float timeout = 0f){
+		yield return Notification.notifier.StartCoroutine(Notification.notifier.Close());
+		Notification.notifier = Notification.notifier.gameObject.AddComponent<Notification>();
+		Notification.notifier.title = title;
+		Notification.notifier.content = content;
+		Notification.notifier.buttons = buttons;
+		if (timeout>0f){
+			Notification.notifier.StartCoroutine(Notification.notifier.Timeout(timeout));	
 		}
 	}
 	
@@ -70,10 +60,12 @@ public class Notification : GUIScreen {
 	void NotificationWindow(int id){
 		int buttonNumber = 0;
 		float widthModifier = 0;
+		
 //		if (spriteAnimation.IsStopped()){
 //			spriteAnimation = test.animations[1];
 //		}
 //		GUI.DrawTexture(new Rect(0,0,test.spriteWidth, test.spriteHeight),spriteAnimation.PlayAnimation(.3f));
+		
 		GUI.Label(new Rect(79, 15, windowBounds.width - 79, windowBounds.height - 15), content);
 		foreach (KeyValuePair<string, buttonAction> button in buttons){
 			if (buttons.Count%2 == 1)
@@ -119,20 +111,9 @@ public class Notification : GUIScreen {
 				n.title = nextTitle;
 				n.content = nextContent;
 				n.buttons = nextButtons;
-				Close();
 				Notification.notifier = n;
-			}
-		}
-		if (!displayed){
-			Close();
-		}
-		
-		if (timeout.IsFinished() && timeoutTime > 0){
-			if (!displayed){
 				Close();
 			}
-			if (transitionTimer.IsStopped())
-				WrapDown(windowBounds);
 		}
 		if (Input.GetKeyDown(KeyCode.Space))
 			WrapDown(windowBounds);
@@ -143,9 +124,8 @@ public class Notification : GUIScreen {
 		
 	}
 	
-	void Close(){
-		Destroy(this);
-		Notification.notifier = null;
+	IEnumerator Close(){
+		yield return StartCoroutine(WrapDown(windowBounds, .5f));
 	}
 	
 	void testButton(){

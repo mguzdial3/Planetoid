@@ -27,7 +27,7 @@ public class CreditsGUI : GUIScreen {
 	}
 	
 	void Back(){
-		this.gameObject.GetComponent<MainMenuGUI>().ScaleIn();
-		ScaleOut();
+		StartCoroutine(this.gameObject.GetComponent<MainMenuGUI>().ScaleIn());
+		StartCoroutine(ScaleOut());
 	}	
 }

@@ -41,8 +41,8 @@ public class RegisterGUI : GUIScreen {
 	}
 	
 	void MakeAccount(){
-		ScaleOut();
-		gameObject.GetComponent<LoginGUI>().ScaleIn();
+		StartCoroutine(ScaleOut());
+		StartCoroutine(gameObject.GetComponent<LoginGUI>().ScaleIn());
 	}
 	
 	void Clear(){

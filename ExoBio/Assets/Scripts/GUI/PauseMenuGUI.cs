@@ -36,11 +36,11 @@ public class PauseMenuGUI : GUIScreen {
 	void Update(){
 		if (Input.GetKeyDown(KeyCode.Escape)){
 			if (paused){
-				ScaleOut(.2f);
+				StartCoroutine(ScaleOut(.2f));
 				paused = false;
 			}
 			else{
-				ScaleIn (.2f);
+				StartCoroutine(ScaleIn (.2f));
 				paused = true;
 			}
 		}
@@ -54,5 +54,5 @@ public class PauseMenuGUI : GUIScreen {
 	void Login(){
 		TransitionGUI.SwitchLevel("loginscene");
 		ScaleOut();
-	}	
+	}
 }

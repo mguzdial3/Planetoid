@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Timer {
 	float startTime, timerInterval, percentDone;
-	bool stopped, repeating;
+	public bool stopped, repeating;
 	
 	public Timer(float timerInterval){
 		this.timerInterval = timerInterval; //time between timer going off (in seconds)
@@ -14,8 +14,9 @@ public class Timer {
 	public bool IsFinished(){
 		if (!stopped){
 			if (Time.realtimeSinceStartup > startTime + timerInterval){
-				if (repeating)
+				if (repeating){
 					Restart(); //automatically restart timer when it's found to be over
+				}
 				else {
 					Stop();
 				}
@@ -36,6 +37,8 @@ public class Timer {
 	
 	public float Percent(){
 		percentDone = Mathf.Clamp01((Time.realtimeSinceStartup - startTime)/timerInterval);
+		if (percentDone >= 1 && repeating)
+			Restart();
 		return percentDone;
 	}	
 	

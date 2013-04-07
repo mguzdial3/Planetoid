@@ -4,19 +4,17 @@ using System.Collections;
 public class TransitionGUI : GUIScreen {
 	
 	Texture2D blackTex;
-	bool switchingLevel;
-	static string levelName;
 	static TransitionGUI guiReference;
 	
 	void Start () {
 		depth = 0;
-		useLetterBox();
+		useLetterBox(true);
 		guiReference = this;
 		blackTex = new Texture2D(1,1);
 		blackTex.SetPixel(0,0,Color.black);
 		blackTex.Apply();
 		displayed = true;
-		FadeOut(.6f);
+		StartCoroutine(FadeOut(.6f));
 	}
 	
 	protected override void DrawGUI (){
@@ -24,14 +22,16 @@ public class TransitionGUI : GUIScreen {
 	}
 	
 	void Update(){
-		if (switchingLevel && transitionTimer.IsFinished()){
-			Application.LoadLevel(levelName);
+		if (Input.GetKeyDown(KeyCode.H)){
+			useLetterBox(true);	
+		}
+		if (Input.GetKeyDown(KeyCode.G)){
+			useLetterBox(false);	
 		}
 	}
 	
-	public static void SwitchLevel(string levelName){
-		TransitionGUI.levelName = levelName;
-		TransitionGUI.guiReference.FadeIn();
-		TransitionGUI.guiReference.switchingLevel = true;
+	public static IEnumerator SwitchLevel(string levelName){
+		yield return TransitionGUI.guiReference.StartCoroutine(TransitionGUI.guiReference.FadeIn());
+		Application.LoadLevel(levelName);
 	}
 }

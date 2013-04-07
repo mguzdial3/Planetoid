@@ -15,24 +15,15 @@ public class CameraGUI : GUIScreen {
 	}
 	
 	public static void Snap(){
-		CameraGUI.camera.Flash();	
+		CameraGUI.camera.StartCoroutine(CameraGUI.camera.Flash());	
 	}
 	
 	protected override void DrawGUI (){
 		GUI.DrawTexture(new Rect(0,0, targetWidth, targetHeight), flashTex);
 	}
 	
-	public void Flash(){
-		FadeIn(.05f);
-		flashing = true;
-	}
-	
-	void Update(){
-		if (displayed && flashing && transitionTimer.IsFinished()){
-			FadeOut(.3f);
-			flashing = false;
-		}
-	}
-	
-	
+	public IEnumerator Flash(){
+		yield return StartCoroutine(FadeIn(.05f));
+		StartCoroutine(FadeOut(.2f));
+	}	
 }

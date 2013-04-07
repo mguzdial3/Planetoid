@@ -16,7 +16,7 @@ public class LoginGUI : GUIScreen {
 		buttonHeight = 30f;
 		leftMargin = 15f;
 		topMargin = 15f;
-		FadeIn();
+		StartCoroutine(FadeIn());
 	}
 	
 	protected override void DrawGUI(){
@@ -38,17 +38,17 @@ public class LoginGUI : GUIScreen {
 	void Login(){
 		if (username != "" && username == password){
 			TransitionGUI.SwitchLevel("testlevel");
-			FadeOut();
+			StartCoroutine(FadeOut());
 		}
 	}
 	
 	void Register(){
-		ScaleOut();
-		gameObject.GetComponent<RegisterGUI>().ScaleIn();
+		StartCoroutine(ScaleOut());
+		StartCoroutine(gameObject.GetComponent<RegisterGUI>().ScaleIn());
 	}
 	
 	void Update(){
 		if (Input.GetKeyDown(KeyCode.Space))
-			ScaleIn();
+			StartCoroutine(ScaleIn());
 	}
 }

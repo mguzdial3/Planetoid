@@ -12,6 +12,7 @@ public class SpaceShipGUI : GUIScreen {
 	Texture2D blackTex;
 	string[] items;
 	Vector2 itemScroll = Vector2.zero;
+	Rect experienceRect;
 	
 	void Start () {
 		FadeIn();
@@ -37,11 +38,27 @@ public class SpaceShipGUI : GUIScreen {
 		skin.label.fontSize = 50;
 		skin.label.alignment = TextAnchor.MiddleCenter;
 		
-		experienceTimer = new Timer(3f);
+		StartCoroutine(ExperienceAnimation());
 		Persist(true);
 		
 		Screen.showCursor = true;
 		Screen.lockCursor = false;
+		StartCoroutine(FadeIn(.6f));
+	}
+	
+	IEnumerator ExperienceAnimation(){	
+		animateExperience = true;
+		Timer experienceTimer = new Timer(3f);
+		while (!experienceTimer.IsFinished()){
+			experienceRect = new Rect(100, (600 - experience*gridScale) + experience*gridScale*(1-experienceTimer.Percent()), 300, experience*gridScale*experienceTimer.Percent());
+			yield return 0;
+		}
+
+		if (experience >= nextLevelExperience){
+			LevelUp();
+		}
+
+		animateExperience = false;
 	}
 	
 	string GetRank(int score){
@@ -77,7 +94,7 @@ public class SpaceShipGUI : GUIScreen {
 		PowerUpPanel();
 		
 		if (GUI.Button(new Rect(targetWidth/2f + 15, 800, 500, 200), "Leave Ship")){
-			TransitionGUI.SwitchLevel("SceneTest-With Creatures");
+			StartCoroutine(TransitionGUI.SwitchLevel("SceneTest-With Creatures"));
 		}
 	}
 	
@@ -101,13 +118,7 @@ public class SpaceShipGUI : GUIScreen {
 		
 		// Experience Bar
 		if (animateExperience){
-			GUI.Box(new Rect(100, (600 - experience*gridScale) + experience*gridScale*(1-experienceTimer.Percent()), 300, experience*gridScale*experienceTimer.Percent()),"");
-			if (experienceTimer.IsFinished()){
-				animateExperience = false;
-				if (experience >= nextLevelExperience){
-					LevelUp();
-				}
-			}
+			GUI.Box(experienceRect,"");
 		}
 		else{
 			GUI.Box(new Rect(100, 600 - experience*gridScale, 300, experience*gridScale),"");
