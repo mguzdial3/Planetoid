@@ -23,11 +23,8 @@ public class CharacterMotion : MonoBehaviour {
 	
 	int groundedCheck=0;
 	
+	public string[] tagsNotToGoTo = {"Water"};
 	
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -230,7 +227,6 @@ public class CharacterMotion : MonoBehaviour {
 				RaycastHit hit;
 			
 			
-			
 				//MATTHEW. FIX THIS
 				if(Physics.Raycast(transform.position,newPos-transform.position,out hit, 10*((newPos-transform.position).magnitude))){
 					//You can't go there! There's a thing there!
@@ -238,11 +234,47 @@ public class CharacterMotion : MonoBehaviour {
 						//print("Hit a: "+hit.collider.name);
 					}
 					else{
-						transform.position=newPos;
+						RaycastHit hit2;
+						//Let's see if water is below you
+						if(Physics.Raycast(newPos,transform.up*-1,out hit2, transform.localScale.y*2)){
+							bool canGoThere = true;	
+							
+							for(int i =0; i<tagsNotToGoTo.Length; i++){
+								if(tagsNotToGoTo[i]==hit2.collider.tag){
+									canGoThere=false;
+								}
+							}
+						
+							if(canGoThere){
+								transform.position=newPos;
+							}
+						}
+						else{
+							transform.position=newPos;
+						}
+					
+						
 					}
 				}
 				else{
-					transform.position=newPos;
+					RaycastHit hit2;
+						//Let's see if water is below you
+						if(Physics.Raycast(newPos,transform.up*-1,out hit2, 10)){
+							bool canGoThere = true;	
+						
+							for(int i =0; i<tagsNotToGoTo.Length; i++){
+								if(tagsNotToGoTo[i]==hit2.collider.tag){
+									canGoThere=false;
+								}
+							}
+						
+							if(canGoThere){
+								transform.position=newPos;
+							}
+						}
+						else{
+							transform.position=newPos;
+						}
 				}
 			}
 	}
@@ -256,7 +288,9 @@ public class CharacterMotion : MonoBehaviour {
 		}
 		
 		RaycastHit hit;
-			if(Physics.Raycast(transform.position,Vector3.down,out hit,distance)){
+			if(Physics.Raycast(transform.position,Vector3.down,out hit,distance)
+			|| Physics.Raycast(transform.position,Vector3.down,out hit,distance*0.5f)
+			|| Physics.Raycast(transform.position,Vector3.down,out hit,distance*1.5f)){
 			
 				//print("Name of hit: "+hit.collider.name);
 				//GROUNDED

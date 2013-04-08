@@ -3,7 +3,7 @@ using System.Collections;
 
 //ATTACH TO MAIN 'eyes' CAMERA
 public class Flashlight : Powerup {
-	Light myLight;
+	public Light myLight;
 	
 	//FOR TESTING ONLY
 	void Start(){

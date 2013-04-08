@@ -90,7 +90,7 @@ public class WhaleMovementController : MonoBehaviour {
 		bool facingGoal = TurnToFace(goal);
 		
 		if(facingGoal){
-			print("Moving Towards");
+			//print("Moving Towards");
 			//don't want to be moving in the y direction
 			goal.y=transform.position.y;
 			//Difference between our position and the goal
@@ -124,7 +124,7 @@ public class WhaleMovementController : MonoBehaviour {
 					if(Physics.Raycast(newPosition, -1*transform.up, out hit, 46.0f)){
 						//Only move there if there's water there
 					
-						print("Hit collider: "+hit.collider.name);
+						//print("Hit collider: "+hit.collider.name);
 						if(hit.collider.tag=="Water"){
 							transform.position+=Time.deltaTime*difference*speed;
 						}

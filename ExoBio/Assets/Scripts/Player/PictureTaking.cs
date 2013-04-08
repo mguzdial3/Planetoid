@@ -3,42 +3,36 @@ using System.Collections;
 using System.IO;
 
 
-
 public class PictureTaking : MonoBehaviour {
-	public Camera cam;
-	//public Renderer texture;
-	private bool guiOn, takeShot;
+	//Whether or not the gui used to look at pictures is on
+	//Whether or not we should be taking a shot
+	private bool guiOn;
+	//The index we're presently looking at for the gui
 	int indexLookingAt;
+	
+	//Actual photo images
 	public ArrayList textures;
-	public int[] scores;
-	int resWidth, resHeight;
-	private int count = 0, maxNumberOfShots = 20;
+	//Meta data for pictures
+	public PictureData[] pictures;
+	//Current count and the maximum number
+	private int count = 0, maxNumberOfShots = 100;
 	
 	
 	//Sound for camera to make
 	public AudioClip cameraNoise;
-	
+	//The middle of the camera
 	public GUITexture cameraMark;
 	
-	public bool rabbitPictureHave;
+	
+	
 	
 	void Start(){
-		resWidth=Screen.width;
-		resHeight=Screen.height;
-		takeShot=true;
+		
 		textures = new ArrayList();
 		
-		scores = new int[maxNumberOfShots];
-		//Store in playerprefs for later
-		/**
-		for(int i =0; i<3; i++){
-			Texture2D curr = Resources.Load("-"+i) as Texture2D;
-				
-			if(curr!=null){
-				textures.Add(curr);
-			}
-		}
-		*/
+		//Instantiate our list of the number of pictures that can be taken (100)
+		pictures = new PictureData[maxNumberOfShots];
+		
 	}
 	
 	void Update(){
@@ -57,7 +51,7 @@ public class PictureTaking : MonoBehaviour {
 		//+ transform.up
 		Debug.DrawLine(transform.position , (transform.forward*(200)+transform.position+transform.up));
 		if(Physics.SphereCast(transform.position,1.0f,transform.forward, out hit,200.0f)){
-			print("I sphere raycasted at: "+hit.transform.name);
+			//print("I sphere raycasted at: "+hit.transform.name);
 			
 			if(hit.collider.tag=="Creature"){
 				cameraMark.color= Color.green;
@@ -76,8 +70,8 @@ public class PictureTaking : MonoBehaviour {
 		if(!guiOn){
 			float zoomAmnt = Input.GetAxis("CamVertical");
 			
-			if(zoomAmnt!=0){
-				cam.fieldOfView-=Time.deltaTime*zoomAmnt*5.0f;
+			if(zoomAmnt!=0 && camera.fieldOfView-Time.deltaTime*zoomAmnt*5.0f>45 && camera.fieldOfView-Time.deltaTime*zoomAmnt*5.0f<100){
+				camera.fieldOfView-=Time.deltaTime*zoomAmnt*5.0f;
 			}
 			
 			
@@ -87,9 +81,10 @@ public class PictureTaking : MonoBehaviour {
 				
 				audio.PlayOneShot(cameraNoise);
 				CameraGUI.Snap();
-				int scoreForDis=determineScore(hits);
-				
-				scores[count] = scoreForDis;
+				//int scoreForDis=determineScore(hits);
+				PictureData p = getData(hits);
+				pictures[count] = p;
+				//scores[count] = scoreForDis;
 				
 				StartCoroutine(TakePicture());
 				
@@ -117,86 +112,152 @@ public class PictureTaking : MonoBehaviour {
 			guiOn=!guiOn;
 			indexLookingAt=textures.Count-1;
 			
-			/**
-			ForceUpdate.Force();
-			//Test this
-			for(int i =0; i<20; i++){
-				Texture2D curr = Resources.Load("-"+i) as Texture2D;
-				
-				if(curr!=null){
-					textures.Add(curr);
-				}
-			}
-			*/
 		}
 	}
 	
-	
-	
-	
-	void LateUpdate(){
-		if(!takeShot){
-			
-			TakePicture();
-			
-			
-			
-		}
-	}
-	
-	int determineScore(RaycastHit[] hits){
-		int scoreToReturn =0;
+	//Returns PictureData based on the picture expressed as RaycastHits
+	PictureData getData(RaycastHit[] hits){
+		float scoreToReturn =0;
 		Vector2 middleOfScreen = new Vector2(Screen.width/2,Screen.height/2);
-		
 		ArrayList creaturesInPic = new ArrayList();
 		
+		
+		bool theresANewCreatureInThere=false;
+		
 		foreach(RaycastHit hitt in hits){
+			
+			
+			
+			Debug.Log("Hit name: "+hitt.transform.name);
 			if(hitt.collider.tag=="Creature"){
-				BasicCreature bc = hitt.collider.GetComponent<BasicCreature>();
+				
+				
+				//Got up to the tippity top
+				GameObject creatah = hitt.transform.gameObject;
+				int levelsUp = 0;
+				if(creatah!=null ){
+					while(creatah.transform.parent!=null && levelsUp<4){
+						creatah=creatah.transform.parent.gameObject;
+						levelsUp++;
+						
+						Debug.Log("Name of parent: "+creatah);
+					}
+				}
+				BasicCreature bc = creatah.GetComponent<BasicCreature>();
+				
+				
+				
+				
 				
 				//If it has Basic Creature attached, it's a for real creature and not just a limb or something
 				if(bc!=null){
-					if(!creaturesInPic.Contains(bc)){
+					if(!creaturesInPic.Contains(bc.gameObject)){
 						
 						
 						//You get a 1000 points for a new picture of a creature
-						if(!rabbitPictureHave){
-							//TODO; Need to check if we already have a picture of the thing
+						//Using player prefs to detect if it's new
+						if(PlayerPrefs.GetInt(bc.name)==0){
 							scoreToReturn+=1000;
-			
-							rabbitPictureHave=true;
+							PlayerPrefs.SetInt(bc.name,1);
+							theresANewCreatureInThere=true;
+						}
+						
+						//Calculate light value (first see if we've got a flashlight on)
+						float lightVal = 0.0f;
+						
+						Flashlight light = transform.parent.GetComponent<Flashlight>();
+						
+						if(light!=null && light.myLight.intensity!=0){
+							lightVal= 1.0f;
 						}
 						else{
-							//You automatically get 100 points for each creature in the picture, scaled by distance to center of frame
-							//and what it's current state is (so you get 0 for running away creatures, 100 or less for standing creatures and so on
-							Vector2 screenPos = camera.WorldToScreenPoint(bc.transform.position);
+							//Vector3 lightVector = new Vector3(RenderSettings.ambientLight.r,RenderSettings.ambientLight.g,RenderSettings.ambientLight.b);
+							//lightVector.Normalize();
+							lightVal += (RenderSettings.ambientLight.r+RenderSettings.ambientLight.g+RenderSettings.ambientLight.b)/3.0f;
+						
+							//LightVal is only allowed to be 0.5 at the lowest apparently?
+							if(lightVal<0.5f){
+								lightVal = 0.5f;
+							}
+						}
+						
+						
+						//Calculate distance to creature 
+						float distanceVal = 0.0f;
+						float optimalDistance = 20.0f;
+						
+						float actualDistance = (transform.position-bc.transform.position).magnitude;
+						float closeness = Mathf.Abs((optimalDistance-actualDistance)/optimalDistance);
+						distanceVal = Mathf.Clamp(1.2f-closeness, 0.0f,1.0f)*100;
+						
+						//Calculate centered-ness value
+						float centeredVal = 0.0f;
+						Vector2 screenPos = camera.WorldToScreenPoint(bc.transform.position);
+						
+						if(screenPos.x>0 && screenPos.x<Screen.width && screenPos.y>0 && screenPos.y<Screen.height){
+							//Distance to middle
+							float distToMiddle = (screenPos- new Vector2(Screen.width/2, Screen.height/2)).magnitude;
 							
-							
-							float distance = Vector3.Distance(screenPos,middleOfScreen);
-							
-							float distance3D = (transform.position-bc.transform.position).magnitude;
-							
-							if(distance==0){
-								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.getPoints()*100);
+							if(distToMiddle!=0){
+								float maxPossibleDistanceOnScreen = Mathf.Min(Screen.width/2, Screen.height/2);
+								
+								centeredVal = 0.3f / (distToMiddle/maxPossibleDistanceOnScreen);
+								
+								Mathf.Clamp(centeredVal, 0.3f, 1.0f);
+								
 							}
 							else{
-								scoreToReturn+=(int)+(100-distance3D)+(int)(bc.getPoints()*100*(1.0f/distance));
+								centeredVal = 1.0f;
 							}
-							
-							
-							
-							
-							
-						
 						}
-						creaturesInPic.Add(bc);
+						
+						//Grab the behavior val
+						float behaviorVal = bc.currentState;
+						
+						//Facing you value 
+						float facingVal = 0.0f;
+						Vector3 lineToPlayer = transform.position-bc.transform.position;
+						lineToPlayer.Normalize();
+						
+						
+						float angleBetween = Vector3.Angle(lineToPlayer, bc.transform.forward);
+						
+						if(angleBetween<15){
+							facingVal = 1;
+						}
+						else if(angleBetween>90){
+							facingVal = 0.5f;
+						}
+						else{
+							facingVal = 0.5f + Mathf.Clamp(105*(90 - Mathf.Abs(angleBetween)/90), 0, 90) / 180;
+						}
+						
+						
+						//Calculate the rareness valure
+						float rarenessVal = bc.rareness;
+						
+						
+						scoreToReturn += lightVal*centeredVal * facingVal * rarenessVal *(behaviorVal + distanceVal);
+						
+						//If they weren't off screen
+						if(centeredVal!=0){
+							creaturesInPic.Add(bc);
+						}
+						else{
+							Debug.Log("Creature "+bc.name +" was offscreen");
+						}
 					}
 				}
 			}
 		}
 		
+		BasicCreature[] creatures = creaturesInPic.ToArray() as BasicCreature[];
 		
-		return scoreToReturn;
+		Debug.Log("Score: "+scoreToReturn);
+		PictureData data = new PictureData(creatures, scoreToReturn, theresANewCreatureInThere);
+		
+		return data;
+		//return scoreToReturn;
 	}
 	
 	
@@ -257,7 +318,7 @@ public class PictureTaking : MonoBehaviour {
 			if(tex!=null){
 				GUI.Box (new Rect (10,10,Screen.width-20,Screen.height-20), tex);
 				
-				GUI.TextArea( new Rect(0,0,Screen.width/4, 30), "Score: "+scores[indexLookingAt]);
+				//GUI.TextArea( new Rect(0,0,Screen.width/4, 30), "Score: "+scores[indexLookingAt]);
 			}
 			else{
 				GUI.Box(new Rect (10,10,100,50), "Nothing Found");

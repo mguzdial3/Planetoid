@@ -13,7 +13,7 @@ public class DataHolder : MonoBehaviour {
 			Destroy(this);
 		else{
 			DataHolder.created = true;
-			print ("Made Data");
+			//print ("Made Data");
 			DataHolder.pictures = new Dictionary<Texture2D, int>();
 			DataHolder.creatureInfo = new Dictionary<string, Dictionary<string, GUIContent>>();
 			InitializeCreatureInfo();
@@ -23,13 +23,13 @@ public class DataHolder : MonoBehaviour {
 		}
 	}
 	
-	public static void AddPictures(ArrayList textures, int[] scores){
+	public static void AddPictures(ArrayList textures, PictureData[] data){
 		DataHolder.pictures.Clear();
 		int i = 0;
 		if (textures != null){
 			foreach(Object o in textures){
-				DataHolder.pictures.Add(o as Texture2D,scores[i]);
-				DataHolder.totalScore += scores[i];
+				//DataHolder.pictures.Add(o as Texture2D,data[i]);
+				//DataHolder.totalData += data[i];
 				i++;
 			}
 		}
