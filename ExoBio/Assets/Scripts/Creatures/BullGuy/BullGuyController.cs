@@ -11,7 +11,8 @@ public class BullGuyController : CreatureController {
 		homeLocation = transform.position;
 		
 		maxEnergy = 10000;
-		behaviors.Add("First Person Controller", new CreatureAction(STANDING, 0.4f, ThrowIntoAir));
+		behaviors.Add("First Person Controller", new CreatureAction(DANCING, 0.4f, ThrowIntoAir));
+		behaviors.Add("RabbitCreature", new CreatureAction(DANCING, 0.2f, ThrowIntoAir));
 	}
 	
 	

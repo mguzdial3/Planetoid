@@ -62,6 +62,7 @@ public class CreatureController : BasicCreature {
 		homeLocation = transform.position;
 		
 		maxEnergy = energy;
+		behaviors.Add("Bull", new CreatureAction(RUNNINGAWAY, 0.2f, RunningAway));
 		behaviors.Add("First Person Controller", new CreatureAction(RUNNINGAWAY, 0.5f, RunningAway));
 		behaviors.Add(name, new CreatureAction(STANDING, 0.1f, HangOutWith));
 		behaviors.Add("BlueSeed", new CreatureAction(EATING, 0.7f, Eat));
@@ -84,7 +85,7 @@ public class CreatureController : BasicCreature {
 				if(energy>sleepEnergyPoint && goal.magnitude==0){
 					goal = homeLocation + new Vector3(Random.Range(-wanderAmount, wanderAmount), 0, Random.Range(-wanderAmount, wanderAmount));
 				}
-				else if(energy<=sleepEnergyPoint){
+				else if(energy<=sleepEnergyPoint && currentAction.actionStrategy!=SLEEPING){
 					//GO TO SLEEP
 					setUpSleep();
 				}

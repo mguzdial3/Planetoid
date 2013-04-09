@@ -49,6 +49,8 @@ public class WhaleController : BasicCreature {
 	//FOR RUNNING AWAY
 	public float safeDistance = 30.0f;
 	
+	//For setting flying guys
+	public Transform[] flyingGuySpawnPos;
 	
 	//Public for testing
 	public Vector3 goal;

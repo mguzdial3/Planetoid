@@ -10,7 +10,7 @@ public class FriendlyCreatureController : CreatureController {
 		homeLocation = transform.position;
 		
 		maxEnergy = 10000;
-		behaviors.Add("LandDude", new CreatureAction(STANDING, 0.1f, FriendlyHangOutWith));
+		behaviors.Add("Rabbit", new CreatureAction(STANDING, 0.1f, FriendlyHangOutWith));
 	}
 	
 	//Hang Out With

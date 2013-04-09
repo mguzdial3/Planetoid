@@ -8,7 +8,7 @@ public class BasicCreature : MonoBehaviour {
 	//This is the current state for this creature
 	public float currentState=1;
 	//The various states this creature can be in
-	public const float RUNNINGAWAY = 0, STANDING=20, SLEEPING=25f, MOVING=50, ATTACKING=3, EATING=100, DANCING=150;
+	public const float RUNNINGAWAY = 0, STANDING=20, SLEEPING=25f, MOVING=50, ATTACKING=70, EATING=100, DANCING=150;
 	//How rare this creature is (how many points a picture of it is worth
 	public float rareness=1.0f;
 	

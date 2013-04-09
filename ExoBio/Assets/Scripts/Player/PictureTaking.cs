@@ -49,7 +49,7 @@ public class PictureTaking : MonoBehaviour {
 		 RaycastHit hit;
 		//Determine color of indicator, 100.0f is our range for now
 		//+ transform.up
-		Debug.DrawLine(transform.position , (transform.forward*(200)+transform.position+transform.up));
+		//Debug.DrawLine(transform.position , (transform.forward*(200)+transform.position+transform.up));
 		if(Physics.SphereCast(transform.position,1.0f,transform.forward, out hit,200.0f)){
 			//print("I sphere raycasted at: "+hit.transform.name);
 			
@@ -87,7 +87,7 @@ public class PictureTaking : MonoBehaviour {
 				//scores[count] = scoreForDis;
 				
 				StartCoroutine(TakePicture());
-				
+				cameraMark.enabled=false;
 				//StartCoroutine(ScreenshotEncode());
 			}
 			
@@ -167,7 +167,7 @@ public class PictureTaking : MonoBehaviour {
 						
 						Flashlight light = transform.parent.GetComponent<Flashlight>();
 						
-						if(light!=null && light.myLight.intensity!=0){
+						if(light!=null && light.myLight!=null && light.myLight.intensity!=0){
 							lightVal= 1.0f;
 						}
 						else{
@@ -274,6 +274,7 @@ public class PictureTaking : MonoBehaviour {
 		textures.Add(texture);
 		
 		count++;
+		cameraMark.enabled=true;
 	}
 	
 	/**

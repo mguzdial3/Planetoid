@@ -6,7 +6,7 @@ public class EatingHandler : MonoBehaviour {
 	private Quaternion originalRotation;
 	public float eatingTime = 1.0f;
 	
-	
+	public string eatAnim;
 	
 	public virtual bool moveMouthToThing(Vector3 goal){
 		if(Mathf.Abs(goal.y-transform.position.y)>0.5f){
@@ -20,7 +20,7 @@ public class EatingHandler : MonoBehaviour {
 			}
 		}
 		else{
-			
+			//animation.Play(eatAnim);
 			Vector3 difference = goal-transform.position;
 			
 			if(difference.magnitude<1.0f){
