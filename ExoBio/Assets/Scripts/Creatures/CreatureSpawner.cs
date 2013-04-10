@@ -29,7 +29,7 @@ public class CreatureSpawner : MonoBehaviour {
 	
 	
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		SpawnCreature(rabbit, Random.Range(4, rabbitMax+1), rabbitPositions);
 		SpawnCreature(friendly, Random.Range(2, friendlyMax+1), friendlyPositions);
 		SpawnCreature(bull, Random.Range(1, bullMax+1), bullPositions);

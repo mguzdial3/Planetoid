@@ -4,8 +4,10 @@ using System.Collections;
 public class Timer {
 	float startTime, timerInterval, percentDone;
 	public bool stopped, repeating;
+	bool gameTime = false;
 	
-	public Timer(float timerInterval){
+	public Timer(float timerInterval, bool useGameTime = false){
+		gameTime = useGameTime;
 		this.timerInterval = timerInterval; //time between timer going off (in seconds)
 		this.Restart();
 		repeating = false;
@@ -13,7 +15,10 @@ public class Timer {
 	
 	public bool IsFinished(){
 		if (!stopped){
-			if (Time.realtimeSinceStartup > startTime + timerInterval){
+			float time = Time.realtimeSinceStartup;
+			if (gameTime)
+				time = Time.time;
+			if (time > startTime + timerInterval){
 				if (repeating){
 					Restart(); //automatically restart timer when it's found to be over
 				}
@@ -36,7 +41,10 @@ public class Timer {
 	}
 	
 	public float Percent(){
-		percentDone = Mathf.Clamp01((Time.realtimeSinceStartup - startTime)/timerInterval);
+		float time = Time.realtimeSinceStartup;
+		if (gameTime)
+			time = Time.time;
+		percentDone = Mathf.Clamp01((time - startTime)/timerInterval);
 		if (percentDone >= 1 && repeating)
 			Restart();
 		return percentDone;
@@ -44,6 +52,8 @@ public class Timer {
 	
 	public void Restart(){
 		startTime = Time.realtimeSinceStartup;
+		if (gameTime)
+			startTime = Time.time;
 		Start();
 	}
 	

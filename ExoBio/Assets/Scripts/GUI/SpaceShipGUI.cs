@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpaceShipGUI : GUIScreen {
 
@@ -19,21 +20,22 @@ public class SpaceShipGUI : GUIScreen {
 		blackTex = new Texture2D(1,1);
 		blackTex.SetPixel(0,0,Color.black);
 		blackTex.Apply();
-		currentRank = GetRank(DataHolder.currentScore);
-		newRank = NextRank(currentRank);
 		items = new string[]{"None"};
-		
-		experience = DataHolder.totalScore;
-		print (DataHolder.currentScore);
-		print (experience);
-		nextLevelExperience = GetExperience(newRank);
+		experience = (int) DataHolder.GetExperience();
+		currentRank = DataHolder.currentRank;
+		List<string> newItems = GetPowerUps(currentRank);
+		if (newItems.Count > 0)
+			items = newItems.ToArray();
+		newRank = NextRank(currentRank);
+		nextLevelExperience = GetExperience(NextRank(currentRank));
 		promotedLevelExperience = nextLevelExperience;
-		if (DataHolder.totalScore > nextLevelExperience){
-			gridScale = 600/(DataHolder.totalScore*1.5f);
+		if (experience > nextLevelExperience){
+			gridScale = 600/(experience*1.5f);
 		}
 		else{
-			gridScale = 600/(nextLevelExperience*1.5f);			
+			gridScale = 600/(experience*1.5f);			
 		}
+		
 		skin.button.fontSize = 50;
 		skin.label.fontSize = 50;
 		skin.label.alignment = TextAnchor.MiddleCenter;
@@ -63,9 +65,11 @@ public class SpaceShipGUI : GUIScreen {
 	
 	string GetRank(int score){
 		string rank = "Intern";
-		if (score > 100)
+		if (score > 1100)
 			rank = "Junior Photographer";
-		if (score > 4000)
+		if (score > 4400)
+			rank = "Full-Time Photographer";
+		if (score > 10000)
 			rank = "Photojournalist";
 		return rank;
 	}
@@ -74,10 +78,13 @@ public class SpaceShipGUI : GUIScreen {
 		int experience = 0;
 		switch (rank){
 		case "Junior Photographer":	
-			experience = 110;
+			experience = 1100;
+			break;
+		case "Full-Time Photographer":
+			experience = 4400;
 			break;
 		case "Photojournalist":
-			experience = 1000;
+			experience = 10000;
 			break;
 		}
 		return experience;
@@ -135,15 +142,33 @@ public class SpaceShipGUI : GUIScreen {
 	}
 	
 	void LevelUp(){
+		currentRank = GetRank(experience);
+		DataHolder.currentRank = currentRank;
+		DataHolder.powerUps = GetPowerUps(currentRank);
+		items = DataHolder.powerUps.ToArray();
 		PopupGUI popup = this.gameObject.AddComponent<PopupGUI>();
-		popup.message = "You've been promoted to " +newRank + "!";
+		popup.message = "You've been promoted to " +currentRank + "!";
 		popup.button = true;
 		popup.parent = this;
-		currentRank = newRank;
 		newRank = NextRank(newRank);
-		DataHolder.currentScore = DataHolder.totalScore;
 		promotedLevelExperience = GetExperience(newRank);
 //		MoveDown(new Rect(0,0,targetWidth, targetHeight), .7f);
+	}
+	
+	List<string> GetPowerUps(string rank){
+		List<string> powers = new List<string>();
+		switch (rank){
+		case "Photojournalist":
+			powers.Add("Jetpack");
+			goto case "Full-Time Photographer";
+		case "Full-Time Photographer":
+			powers.Add("Water Shoes");
+			goto case "Junior Photographer";
+		case "Junior Photographer":
+			powers.Add("Flashlight");
+			break;
+		}
+		return powers;
 	}
 	
 	string NextRank(string rank){
@@ -153,6 +178,9 @@ public class SpaceShipGUI : GUIScreen {
 			nextRank = "Junior Photographer";
 			break;
 		case "Junior Photographer":
+			nextRank = "Full-Time Photographer";
+			break;
+		case "Full-Time Photographer":
 			nextRank = "Photojournalist";
 			break;
 		case "Photojournalist":

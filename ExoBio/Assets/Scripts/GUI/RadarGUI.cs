@@ -12,7 +12,7 @@ public class RadarGUI : GUIScreen {
 	float radarTime = 2f;
 	float percent = 0;
 	float angle = 0;
-	float radarScale = .8f;
+	float radarScale = .5f;
 	bool toggle = true;
 	
 	void Start(){
@@ -31,7 +31,7 @@ public class RadarGUI : GUIScreen {
 			ptr++;
 		}
 
-		radarTimer = new Timer(radarTime);
+		radarTimer = new Timer(radarTime, true);
 		radarTimer.Repeat();
 		
 		radarCenter = new Texture2D(1,1);

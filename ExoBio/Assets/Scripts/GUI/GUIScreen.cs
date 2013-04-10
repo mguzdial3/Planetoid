@@ -22,6 +22,7 @@ public abstract class GUIScreen : MonoBehaviour {
 	protected Rect localBounds = new Rect(0,0,targetWidth, targetHeight);
 	protected Rect movingBounds = new Rect(0,0,targetWidth,targetHeight);
 	Color guiColor;
+	public GUISkin skin;
 
 	protected virtual void Awake (){
 		guiColor = Color.white;
@@ -72,6 +73,7 @@ public abstract class GUIScreen : MonoBehaviour {
 			GUI.DrawTexture(GUIScreen.letterBox2, GUIScreen.letterBox);
 		}
 		if (displayed){
+			GUI.skin = skin;
 			GUI.depth = depth;
 			GUI.matrix = screenTransform;
 			GUI.color = guiColor;

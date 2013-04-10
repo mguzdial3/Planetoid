@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class FieldGuideGUI : GUIScreen {
 	
-	int width = 500, height = 600;
+	int width = 500, height = 800;
 	FieldGuidePage current;
 	FieldGuideHome home;
 	Rect screenRect;
@@ -77,6 +77,7 @@ public class FieldGuideGUI : GUIScreen {
 		Dictionary<string, GUIContent> info = DataHolder.GetCreatureData(name);
 		isHome = false;
 		FieldGuidePage newPage = gameObject.AddComponent<FieldGuidePage>();
+		newPage.parent = this;
 		newPage.name = info["name"];
 		newPage.image = info["image"];
 		newPage.description = info["description"];
@@ -84,11 +85,11 @@ public class FieldGuideGUI : GUIScreen {
 		newPage.notes = info["notes"];
 		newPage.width = width;
 		newPage.height = height;
-		newPage.picWidth = 200;
-		newPage.picHeight = 150;
+		newPage.picWidth = 450;
+		newPage.picHeight = 300;
 		newPage.guideScreen = localBounds;
-		StartCoroutine(home.MoveLeft(screenRect, .4f));
-		StartCoroutine(newPage.MoveLeft(screenRect, .4f));
+		StartCoroutine(home.MoveLeft(screenRect, .3f));
+		StartCoroutine(newPage.MoveLeft(screenRect, .3f));
 		current= newPage;
 	}
 }
@@ -97,13 +98,26 @@ internal class FieldGuidePage : GUIScreen {
 	public GUIContent name, image, description, features, notes;
 	public int width, height, picWidth, picHeight;
 	public Rect guideScreen;
+	public FieldGuideGUI parent;
 	Rect size;
-	GUIStyle labelStyle, headerStyle,imageStyle;
+	bool getSkin = true;
+	GUIStyle labelStyle, headerStyle,imageStyle, buttonStyle;
+	GUISkin pageSkin;
 	
 	void Start(){
+		
 		localBounds = guideScreen;
 		depth = 1;
-		labelStyle = new GUIStyle();
+		size = new Rect(15, 15, guideScreen.width-15, guideScreen.height - 15);
+		width = (int)guideScreen.width-30;
+		height = (int)guideScreen.height - 30;
+		
+		buttonStyle = new GUIStyle(parent.skin.button);
+		buttonStyle.normal.textColor = Color.white;
+		buttonStyle.fontSize = 24;
+		buttonStyle.wordWrap = true;
+
+		labelStyle = new GUIStyle(parent.skin.label);
 		labelStyle.normal.textColor = Color.white;
 		labelStyle.fontSize = 24;
 		labelStyle.wordWrap = true;
@@ -111,15 +125,11 @@ internal class FieldGuidePage : GUIScreen {
 		imageStyle = new GUIStyle();
 		imageStyle.alignment = TextAnchor.MiddleCenter;
 		
-		headerStyle = new GUIStyle();
+		headerStyle = new GUIStyle(parent.skin.label);
 		headerStyle.normal.textColor = Color.white;
 		headerStyle.fontSize = 40;
 		headerStyle.wordWrap = true;
 		headerStyle.alignment = TextAnchor.MiddleCenter;
-		
-		size = new Rect(15, 15, guideScreen.width-15, guideScreen.height - 15);
-		width = (int)guideScreen.width-30;
-		height = (int)guideScreen.height - 30;
 	}
 	
 	protected override void DrawGUI (){
@@ -128,7 +138,7 @@ internal class FieldGuidePage : GUIScreen {
 //		GUILayout.Space(30);
 		GUILayout.Label(name, headerStyle, GUILayout.Width(width));
 		GUILayout.Space(10);
-		GUILayout.Label(image, imageStyle, GUILayout.Width(width));
+		GUILayout.Label(image, imageStyle, GUILayout.Width(picWidth), GUILayout.Height(picHeight));
 		GUILayout.Space(20);
 		GUILayout.Label(description, labelStyle, GUILayout.Width(width));
 		GUILayout.Space(20);
@@ -142,26 +152,45 @@ internal class FieldGuidePage : GUIScreen {
 
 internal class FieldGuideHome : GUIScreen {
 	List<string> creatures;
+	List<string> creatureNames;
 	public Rect guideScreen;
 	Rect size;
-	GUIStyle labelStyle, headerStyle;
+	GUIStyle labelStyle, headerStyle, buttonStyle;
 	public FieldGuideGUI parent;
+	bool getSkin = true;
 	
 	void Start(){
 		localBounds = guideScreen;
 		depth = 1;
-		labelStyle = new GUIStyle();
+		size = new Rect(30, 15, guideScreen.width-30, guideScreen.height - 15);
+		creatureNames = new List<string>();
+		creatures = new List<string>(DataHolder.creatureInfo.Keys);
+		foreach (string s in creatures){
+			creatureNames.Add(DataHolder.creatureInfo[s]["name"].text);
+		}
+		InitializeGUIStyles();		
+	}
+	
+	void InitializeGUIStyles(){
+		buttonStyle = new GUIStyle(parent.skin.button);
+		buttonStyle.normal.textColor = Color.white;
+		buttonStyle.border = new RectOffset(0,0,0,0);
+		buttonStyle.margin = new RectOffset(0,0,0,0);
+		buttonStyle.fontSize = 30;
+		buttonStyle.wordWrap = true;
+
+		labelStyle = new GUIStyle(parent.skin.label);
 		labelStyle.normal.textColor = Color.white;
-		labelStyle.fontSize = 30;
+		labelStyle.fontSize = 24;
+		labelStyle.alignment = TextAnchor.MiddleLeft;
+		labelStyle.wordWrap = true;
 		
-		headerStyle = new GUIStyle();
+		headerStyle = new GUIStyle(parent.skin.label);
 		headerStyle.normal.textColor = Color.white;
-		headerStyle.fontSize = 50;
+		headerStyle.fontSize = 40;
 		headerStyle.wordWrap = true;
 		headerStyle.alignment = TextAnchor.MiddleCenter;
-
-		size = new Rect(30, 15, guideScreen.width-30, guideScreen.height - 15);
-		creatures = new List<string>(DataHolder.creatureInfo.Keys);
+		getSkin = false;
 	}
 	
 	protected override void DrawGUI (){
@@ -170,10 +199,13 @@ internal class FieldGuideHome : GUIScreen {
 //		GUILayout.Space(30);
 		GUILayout.Label("Field Guide", headerStyle, GUILayout.Width(guideScreen.width));
 		GUILayout.Space(20);
+		int i = 0;
 		foreach (string creature in creatures){
-			if (GUILayout.Button(creature, labelStyle, GUILayout.Height(30))){
+			if (GUILayout.Button(creatureNames[i], buttonStyle, GUILayout.Height(50), GUILayout.Width(450))){
 				parent.SwitchToCreature(creature);
 			}
+			GUILayout.Space(10);
+			i++;
 		}
 		GUILayout.EndVertical();
 		GUILayout.EndArea();

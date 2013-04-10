@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 
@@ -7,6 +8,7 @@ public class PictureTaking : MonoBehaviour {
 	//Whether or not the gui used to look at pictures is on
 	//Whether or not we should be taking a shot
 	private bool guiOn;
+	private bool pictureTaken = false;
 	//The index we're presently looking at for the gui
 	int indexLookingAt;
 	
@@ -78,7 +80,6 @@ public class PictureTaking : MonoBehaviour {
 			if(Input.GetMouseButtonDown(0) && count<maxNumberOfShots){
 				//Figure out the score
 				RaycastHit[] hits = Physics.SphereCastAll(transform.position, 10.0f, transform.forward, 100.0f);
-				
 				audio.PlayOneShot(cameraNoise);
 				CameraGUI.Snap();
 				//int scoreForDis=determineScore(hits);
@@ -86,8 +87,9 @@ public class PictureTaking : MonoBehaviour {
 				pictures[count] = p;
 				//scores[count] = scoreForDis;
 				
-				StartCoroutine(TakePicture());
-				cameraMark.enabled=false;
+				// Picture will be stored OnPostRender
+				pictureTaken = true;
+				
 				//StartCoroutine(ScreenshotEncode());
 			}
 			
@@ -119,8 +121,8 @@ public class PictureTaking : MonoBehaviour {
 	PictureData getData(RaycastHit[] hits){
 		float scoreToReturn =0;
 		Vector2 middleOfScreen = new Vector2(Screen.width/2,Screen.height/2);
-		ArrayList creaturesInPic = new ArrayList();
-		
+		List<BasicCreature> creaturesInPic = new List<BasicCreature>();
+		List<Dictionary<string, float>> criteria = new List<Dictionary<string, float>>();
 		
 		bool theresANewCreatureInThere=false;
 		
@@ -151,17 +153,7 @@ public class PictureTaking : MonoBehaviour {
 				
 				//If it has Basic Creature attached, it's a for real creature and not just a limb or something
 				if(bc!=null){
-					if(!creaturesInPic.Contains(bc.gameObject)){
-						
-						
-						//You get a 1000 points for a new picture of a creature
-						//Using player prefs to detect if it's new
-						if(PlayerPrefs.GetInt(bc.name)==0){
-							scoreToReturn+=1000;
-							PlayerPrefs.SetInt(bc.name,1);
-							theresANewCreatureInThere=true;
-						}
-						
+					if(!creaturesInPic.Contains(bc)){						
 						//Calculate light value (first see if we've got a flashlight on)
 						float lightVal = 0.0f;
 						
@@ -173,8 +165,9 @@ public class PictureTaking : MonoBehaviour {
 						else{
 							//Vector3 lightVector = new Vector3(RenderSettings.ambientLight.r,RenderSettings.ambientLight.g,RenderSettings.ambientLight.b);
 							//lightVector.Normalize();
-							lightVal += (RenderSettings.ambientLight.r+RenderSettings.ambientLight.g+RenderSettings.ambientLight.b)/3.0f;
-						
+							lightVal = GameObject.Find("DayHandler").GetComponent<DayNightCycle>().restartScene.Percent() + 0.5f;
+							lightVal = Mathf.Clamp01(lightVal);
+							
 							//LightVal is only allowed to be 0.5 at the lowest apparently?
 							if(lightVal<0.5f){
 								lightVal = 0.5f;
@@ -188,7 +181,7 @@ public class PictureTaking : MonoBehaviour {
 						
 						float actualDistance = (transform.position-bc.transform.position).magnitude;
 						float closeness = Mathf.Abs((optimalDistance-actualDistance)/optimalDistance);
-						distanceVal = Mathf.Clamp(1.2f-closeness, 0.0f,1.0f)*100;
+						distanceVal = Mathf.Clamp01(1.4f-closeness)*100;
 						
 						//Calculate centered-ness value
 						float centeredVal = 0.0f;
@@ -201,9 +194,7 @@ public class PictureTaking : MonoBehaviour {
 							if(distToMiddle!=0){
 								float maxPossibleDistanceOnScreen = Mathf.Min(Screen.width/2, Screen.height/2);
 								
-								centeredVal = 0.3f / (distToMiddle/maxPossibleDistanceOnScreen);
-								
-								Mathf.Clamp(centeredVal, 0.3f, 1.0f);
+								centeredVal = 1f - 0.6f * Mathf.Clamp01((distToMiddle/maxPossibleDistanceOnScreen));
 								
 							}
 							else{
@@ -223,25 +214,33 @@ public class PictureTaking : MonoBehaviour {
 						float angleBetween = Vector3.Angle(lineToPlayer, bc.transform.forward);
 						
 						if(angleBetween<15){
-							facingVal = 1;
+							facingVal = 1.5f;
 						}
 						else if(angleBetween>90){
 							facingVal = 0.5f;
 						}
 						else{
-							facingVal = 0.5f + Mathf.Clamp(105*(90 - Mathf.Abs(angleBetween)/90), 0, 90) / 180;
+							facingVal = 0.5f + 2*Mathf.Clamp(105*(90 - Mathf.Abs(angleBetween)/90), 0, 90) / 180;
 						}
 						
 						
 						//Calculate the rareness valure
 						float rarenessVal = bc.rareness;
 						
+						Dictionary<string, float> tempCriteria = new Dictionary<string, float>();
+						tempCriteria.Add("facing", facingVal);
+						tempCriteria.Add("center", centeredVal);
+						tempCriteria.Add("rareness", rarenessVal);
+						tempCriteria.Add("distance", distanceVal);
+						tempCriteria.Add("behavior", behaviorVal);
+						tempCriteria.Add("light", lightVal);
 						
-						scoreToReturn += lightVal*centeredVal * facingVal * rarenessVal *(behaviorVal + distanceVal);
+//						scoreToReturn += lightVal*centeredVal * facingVal * rarenessVal *(behaviorVal + distanceVal);
 						
 						//If they weren't off screen
 						if(centeredVal!=0){
 							creaturesInPic.Add(bc);
+							criteria.Add(tempCriteria);
 						}
 						else{
 							Debug.Log("Creature "+bc.name +" was offscreen");
@@ -249,32 +248,25 @@ public class PictureTaking : MonoBehaviour {
 					}
 				}
 			}
-		}
-		
-		BasicCreature[] creatures = creaturesInPic.ToArray() as BasicCreature[];
-		
-		Debug.Log("Score: "+scoreToReturn);
-		PictureData data = new PictureData(creatures, scoreToReturn, theresANewCreatureInThere);
+		}		
+		PictureData data = new PictureData(creaturesInPic, criteria);
 		
 		return data;
 		//return scoreToReturn;
 	}
 	
-	
-	IEnumerator TakePicture(){
-		// create a texture to pass to encoding
-		yield return new WaitForEndOfFrame();
-		
-        Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
- 
-        // put buffer into texture
-        texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-        texture.Apply();
- 
-		textures.Add(texture);
-		
-		count++;
-		cameraMark.enabled=true;
+	void OnPostRender(){
+		if (pictureTaken){
+			// create a texture to pass to encoding
+    	    Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+ 	
+    	    // put buffer into texture
+        	texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+	        texture.Apply();
+			textures.Add(texture);
+			count++;
+			pictureTaken = false;
+		}
 	}
 	
 	/**

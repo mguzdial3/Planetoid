@@ -1,43 +1,20 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //Just an info holder for pictures
 public class PictureData{
-	//Number of creatures in this photo
-	public int numCreaturesInPicture;
 	//Names of creatures in this photo
-	public string[] namesOfCreatures;
-	//Score for this photo
-	public float score;
-	//Whether or not there's a new creature that we haven't seen before in this picture
-	public bool newCreature;
+	public List<string> namesOfCreatures;
+	//Score aspects for this photo
+	public List<Dictionary<string, float>> scoringCriteria;	
 	
-	
-	
-	//Constructor
-	public PictureData(int _numCreaturesInPicture, string[] names, float _score, bool somebodyNew){
-		
-		numCreaturesInPicture=_numCreaturesInPicture;
-		namesOfCreatures = names;
-		score=_score;
-		newCreature=somebodyNew;
-	}
-	
-	public PictureData(BasicCreature[] creaturesInPicture, float _score, bool somebodyNew){
+	public PictureData(List<BasicCreature> creaturesInPicture, List<Dictionary<string, float>> _score){
 		if(creaturesInPicture!=null){
-			numCreaturesInPicture = creaturesInPicture.Length-1;
-			string[] names = new string[creaturesInPicture.Length];
-			
-			for(int i = 0; i<creaturesInPicture.Length; i++){
-				names[i] = creaturesInPicture[i].transform.name;
+			foreach(BasicCreature c in creaturesInPicture){
+				namesOfCreatures.Add(c.GetType().Name);
 			}
+			scoringCriteria = _score;
 		}
-		score = _score;
-		
-		newCreature= somebodyNew;
-		
-		
 	}
-	
-	
 }

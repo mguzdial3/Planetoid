@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class DayNightCycle : MonoBehaviour {
 
-	Timer restartScene;
+	public Timer restartScene;
 	public enum TimeScale {SECONDS, MINUTES, HOURS};
 	public TimeScale scale = TimeScale.MINUTES;
 	public int timeToRestart = 5;
@@ -28,15 +28,19 @@ public class DayNightCycle : MonoBehaviour {
 			timeToRestart *= 3600;
 			break;
 		}
-		restartScene = new Timer(timeToRestart);
+		restartScene = new Timer(timeToRestart, true);
 		skyBox.color = dayColor;
+	}
+	
+	public static void ToReview(){
+		PictureTaking picture = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<PictureTaking>();
+		DataHolder.AddPictures(picture.textures, picture.pictures);
+		picture.StartCoroutine(TransitionGUI.SwitchLevel("review"));		
 	}
 	
 	void Update(){
 		if (restartScene.IsFinished()){
-			StartCoroutine(TransitionGUI.SwitchLevel("review"));
-			PictureTaking picture = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<PictureTaking>();
-			DataHolder.AddPictures(picture.textures, picture.pictures);
+			DayNightCycle.ToReview();
 			this.enabled = false;
 		}
 		TimeNotifications();
@@ -46,8 +50,9 @@ public class DayNightCycle : MonoBehaviour {
 	}
 	
 	void TimeNotifications(){
-		if (restartScene.Percent() > .9 && !lateNotified){
-			Notification.Notify("Boss", "It's getting late, you better wrap up soon!", new Dictionary<string, Notification.buttonAction>(), 4f);
+		if (restartScene.Percent() > .9f && !lateNotified){
+			gameObject.AddComponent<LeaveToShipGUI>();
+			StartCoroutine(Notification.Notify("Boss", "It's getting late, you better wrap up soon!", new Dictionary<string, Notification.buttonAction>(), 4f));
 			lateNotified = true;
 		}
 	}

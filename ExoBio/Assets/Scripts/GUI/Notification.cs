@@ -13,7 +13,7 @@ public class Notification : GUIScreen {
 	static Notification notifier = null;
 	public string nextTitle, nextContent;
 	int width = 400;
-	int height = 100;
+	int height = 200;
 	int buttonHeight = 30;
 	int buttonWidth = 50;
 	GUIStyle header;
@@ -29,7 +29,7 @@ public class Notification : GUIScreen {
 		GUI.contentColor = Color.white;
 		Notification.notifier = this;
 		buttons = new Dictionary<string, buttonAction>();
-		windowBounds = new Rect(targetWidth/2 - width/2, targetHeight - height - 50, width, height);
+		windowBounds = new Rect(targetWidth/2 - width/2 + screenBounds.x, screenBounds.y + targetHeight - height - 50, width, height);
 //		test = new Sprite("testsprite", 32, 32);
 //		spriteAnimation = test.animations[0];
 		StartCoroutine(WrapUp(windowBounds));
@@ -43,8 +43,10 @@ public class Notification : GUIScreen {
 	}
 	
 	public static IEnumerator Notify(string title, string content, Dictionary<string, buttonAction> buttons, float timeout = 0f){
-		yield return Notification.notifier.StartCoroutine(Notification.notifier.Close());
-		Notification.notifier = Notification.notifier.gameObject.AddComponent<Notification>();
+		if (Notification.notifier != null){
+			yield return Notification.notifier.StartCoroutine(Notification.notifier.Close());
+		}
+		Notification.notifier = CameraGUI.camera.gameObject.AddComponent<Notification>();
 		Notification.notifier.title = title;
 		Notification.notifier.content = content;
 		Notification.notifier.buttons = buttons;
