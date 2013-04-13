@@ -12,7 +12,7 @@ public class Flashlight : Powerup {
 	
 	//Set up the Flash light
 	public override void Setup(){
-		myLight = gameObject.AddComponent<Light>();
+		myLight = gameObject.transform.FindChild("Camera-Camera").gameObject.AddComponent<Light>();
 		myLight.type = LightType.Spot;
 		
 		myLight.intensity = 0;

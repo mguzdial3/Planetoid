@@ -30,8 +30,8 @@ public class TransitionGUI : GUIScreen {
 		}
 	}
 	
-	public static IEnumerator SwitchLevel(string levelName){
-		yield return TransitionGUI.guiReference.StartCoroutine(TransitionGUI.guiReference.FadeIn());
+	public static IEnumerator SwitchLevel(string levelName, float time = 0.6f){
+		yield return TransitionGUI.guiReference.StartCoroutine(TransitionGUI.guiReference.FadeIn(time));
 		Application.LoadLevel(levelName);
 	}
 }

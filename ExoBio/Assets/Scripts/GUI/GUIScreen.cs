@@ -11,7 +11,7 @@ public abstract class GUIScreen : MonoBehaviour {
 	protected static bool letterBoxing = false;
 	float transitionTime = .3f;
 	float alpha = 1f;
-	protected int depth = 100;
+	public int depth = int.MaxValue-100;
 	Matrix4x4 screenTransform;
 	protected static Vector3 resolutionTransform;
 	Vector3 scalingTransform, wrappingTransform, movingTransform, currentMove, moveGoal;
@@ -25,6 +25,7 @@ public abstract class GUIScreen : MonoBehaviour {
 	public GUISkin skin;
 
 	protected virtual void Awake (){
+		depth = int.MaxValue-100;
 		guiColor = Color.white;
 		scalingTransform = Vector3.one;
 		wrappingTransform = Vector3.one;
@@ -77,7 +78,7 @@ public abstract class GUIScreen : MonoBehaviour {
 			GUI.depth = depth;
 			GUI.matrix = screenTransform;
 			GUI.color = guiColor;
-			screenTransform = Matrix4x4.TRS(new Vector3(movingTransform.x * resolutionTransform.x, movingTransform.y * resolutionTransform.y, 0f), rotatingTransform, new Vector3(scalingTransform.x * wrappingTransform.x * resolutionTransform.x, scalingTransform.y * wrappingTransform.y * resolutionTransform.y, 1f));
+			screenTransform = Matrix4x4.TRS(new Vector3(movingTransform.x * resolutionTransform.x, movingTransform.y * resolutionTransform.y, 1f), rotatingTransform, new Vector3(scalingTransform.x * wrappingTransform.x * resolutionTransform.x, scalingTransform.y * wrappingTransform.y * resolutionTransform.y, 1f));
 			GUI.BeginGroup(GUIScreen.screenBounds);
 			GUI.BeginGroup(localBounds);
 			GUI.BeginGroup(movingBounds);
@@ -145,13 +146,13 @@ public abstract class GUIScreen : MonoBehaviour {
 	
 	public IEnumerator WrapUp(Rect bounds, float wrapTime = .3f){
 		Timer transitionTimer = new Timer(wrapTime);
-		this.bounds = bounds;
 		displayed = true;
 		while (!transitionTimer.IsFinished()){
 			wrappingTransform = new Vector3(1f, transitionTimer.Percent(), 1f);
 			movingTransform = new Vector3(0f, (bounds.y+bounds.height/2f)*(1-transitionTimer.Percent()), 0f);
 			yield return 0;
 		}
+		movingTransform = Vector3.zero;
 		wrappingTransform = new Vector3(1f,1f,1f);
 	}
 

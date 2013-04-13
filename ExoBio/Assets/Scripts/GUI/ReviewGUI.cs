@@ -74,34 +74,36 @@ public class ReviewGUI : GUIScreen {
 		foreach (PictureData p in data){
 			int i = 0;
 			float highestScore = 0;
-			foreach (string creature in p.namesOfCreatures){
-				
-				float score = 0;
-				// New Creature Bonus
-				if (PlayerPrefs.GetInt(creature) != 143){
-					PlayerPrefs.SetInt(creature,143);
-					DataHolder.creatureScores["Bonus"][0] = DataHolder.creatureScores["Bonus"][0] + 1000;
-					DataHolder.creatureScores.Add(creature, new Dictionary<float, float>());
-					newCreatures++;
-					newCreaturePopup = true;
+			if (p.namesOfCreatures != null){
+				foreach (string creature in p.namesOfCreatures){
+					
+					float score = 0;
+					// New Creature Bonus
+					if (PlayerPrefs.GetInt(creature) != 143){
+						PlayerPrefs.SetInt(creature,143);
+						DataHolder.creatureScores["Bonus"][0] = DataHolder.creatureScores["Bonus"][0] + 1000;
+						DataHolder.creatureScores.Add(creature, new Dictionary<float, float>());
+						newCreatures++;
+						newCreaturePopup = true;
+					}
+					Dictionary<string, float> criteria = p.scoringCriteria[i];
+					
+					// Score the picture
+					score = criteria["light"] * criteria["facing"] * criteria["center"] * criteria["rareness"] * (criteria["distance"] + criteria["behavior"]);
+					if (score > highestScore)
+						highestScore = score;
+					
+					// Check if there is a picture for this behavior of this creature
+					if ((DataHolder.creatureScores[creature].ContainsKey(criteria["behavior"]))){
+						// If the new score is higher, change it
+						if (DataHolder.creatureScores[creature][criteria["behavior"]] < score)
+							DataHolder.creatureScores[creature][criteria["behavior"]] = score;
+					}
+					else{
+						DataHolder.creatureScores[creature].Add(criteria["behavior"], score);
+					}
+					i++;
 				}
-				Dictionary<string, float> criteria = p.scoringCriteria[i];
-				
-				// Score the picture
-				score = criteria["light"] * criteria["facing"] * criteria["center"] * criteria["rareness"] * (criteria["distance"] + criteria["behavior"]);
-				if (score > highestScore)
-					highestScore = score;
-				
-				// Check if there is a picture for this behavior of this creature
-				if ((DataHolder.creatureScores[creature].ContainsKey(criteria["behavior"]))){
-					// If the new score is higher, change it
-					if (DataHolder.creatureScores[creature][criteria["behavior"]] < score)
-						DataHolder.creatureScores[creature][criteria["behavior"]] = score;
-				}
-				else{
-					DataHolder.creatureScores[creature].Add(criteria["behavior"], score);
-				}
-				i++;
 			}
 			picScores.Add(highestScore);
 			picDescriptions.Add(GetDescription(p, highestScore));

@@ -33,7 +33,7 @@ public class SpaceShipGUI : GUIScreen {
 			gridScale = 600/(experience*1.5f);
 		}
 		else{
-			gridScale = 600/(experience*1.5f);			
+			gridScale = 600/(nextLevelExperience*1.5f);			
 		}
 		
 		skin.button.fontSize = 50;
@@ -42,11 +42,47 @@ public class SpaceShipGUI : GUIScreen {
 		
 		StartCoroutine(ExperienceAnimation());
 		Persist(true);
-		
 		Screen.showCursor = true;
 		Screen.lockCursor = false;
 		StartCoroutine(FadeIn(.6f));
+		
+		if (DataHolder.tutorial){
+			StartCoroutine(SalTutorial());
+			DimLightsGUI.LightsOn(false, 11);
+		}
+		else{
+			Notification n = gameObject.AddComponent<Notification>();
+			n.inSpaceShip = true;
+			n.content = "Welcome back, Captain.";
+			n.comeIn = true;
+			n.skin = this.skin;
+		}
 	}
+	
+	IEnumerator SalTutorial(){
+		Notification n = gameObject.AddComponent<Notification>();
+		n.bigNotification = true;
+		n.skin = skin;
+		yield return StartCoroutine(n.FadeIn(.5f));
+		yield return StartCoroutine(SpeakLine("Greetings Captain. Technically I’m referred to as Small Astro-trans Lightship I. You may call me Sal, or Sally, if you prefer.", n));
+		yield return StartCoroutine(SpeakLine("We have landed  and are presently on the planet Noterra. Once you disembark you may view radar in the bottom right-hand corner to see where the alien wildlife lives.", n));
+		yield return StartCoroutine(SpeakLine("There is also a Field Guide that may aid in your exploration of this world. The more you explore, the more info you will collect in your guide about the aliens inhabiting this planet.", n));
+		yield return StartCoroutine(SpeakLine("When you come back to the ship, I'll appear...", n));
+		DimLightsGUI.LightsOn(true);
+		yield return StartCoroutine(n.Close());
+		n = gameObject.AddComponent<Notification>();
+		n.inSpaceShip = true;
+		n.content = "Over here. Remember, should you encounter any difficulties in navigating the rough alien landscape of Notterra, press the ESC key for command information. Good luck!";
+		n.comeIn = true;
+		n.skin = this.skin;
+	}
+	
+	IEnumerator SpeakLine(string line, Notification n){
+		n.content = line;
+		n.displayedContent = "";
+		yield return StartCoroutine(n.TypeInContent());
+		yield return new WaitForSeconds(1f);
+	}	
 	
 	IEnumerator ExperienceAnimation(){	
 		animateExperience = true;
@@ -106,19 +142,20 @@ public class SpaceShipGUI : GUIScreen {
 	}
 	
 	void RankPanel(){
-		GUI.BeginGroup(new Rect(targetWidth/2f - 515, 80, 1030, 300));
-		GUI.Box(new Rect(0, 0, 1030, 200), "");
-		GUI.Label(new Rect(15, 15, 1000, 170),"Rank: " + currentRank);
+		GUI.BeginGroup(new Rect(targetWidth/2f - 515, 80, 430, 300));
+		GUI.Box(new Rect(0, 0, 430, 200), "");
+		GUI.Label(new Rect(15, 15, 400, 170), currentRank);
+		skin.label.wordWrap = true;
 		skin.label.fontSize = 30;
-		GUI.Label(new Rect(600,150,400,50),"Next: " + newRank);
+//		GUI.Label(new Rect(15,150,300,50),"Next: " + newRank);
 		skin.label.fontSize = 50;
-		GUI.EndGroup();		
+		GUI.EndGroup();
 	}
 	
 	void ExperiencePanel(){
 		GUI.BeginGroup(new Rect(targetWidth/2f - 515, 300, 500, 700));
 		GUI.Box(new Rect(0, 0, 500, 700), "");
-		GUI.Label(new Rect(15, 600, 470, 100),"Experience");
+		GUI.Label(new Rect(15, 600, 470, 100),"Reputation");
 		
 		// Graph Area
 		GUI.Box(new Rect(50,50,400,550),"");

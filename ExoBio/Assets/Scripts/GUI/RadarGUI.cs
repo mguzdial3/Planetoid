@@ -1,36 +1,34 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class RadarGUI : GUIScreen {
 	
 	int width = 300, height = 300;
 	Texture2D radarScreen, radarDot, radarCircle, radarCenter;
+	Collider radarDetector;
 	Transform center, centerA, centerB;
-	Transform[] detectables;
-	float[] times;
+	Dictionary<Transform, float> detectables;
+	List<KeyValuePair<Transform, float>> addQueue;
+	List<Transform> removeQueue;
 	Timer radarTimer;
 	float radarTime = 2f;
 	float percent = 0;
 	float angle = 0;
 	float radarScale = .5f;
 	bool toggle = true;
+	bool looping = false;
 	
 	void Start(){
-		Screen.lockCursor = true;
 		localBounds = new Rect(targetWidth-width-30, targetHeight-height-30, width,height);
 		StartCoroutine(FadeIn());
-		GameObject[] ds = GameObject.FindGameObjectsWithTag("Creature");
-		detectables = new Transform[ds.Length];
-		times = new float[ds.Length+1];
+		addQueue = new List<KeyValuePair<Transform, float>>();
+		removeQueue = new List<Transform>();
+		detectables = new Dictionary<Transform, float>();
 		center = GameObject.FindGameObjectWithTag("MainCamera").transform;
 		centerA = center;
 		centerB = center.GetChild(0);
-		int ptr = 0;
-		foreach (GameObject d in ds){
-			detectables[ptr] = d.transform;
-			ptr++;
-		}
-
+		
 		radarTimer = new Timer(radarTime, true);
 		radarTimer.Repeat();
 		
@@ -41,6 +39,16 @@ public class RadarGUI : GUIScreen {
 		radarScreen = Resources.Load("radarscreen") as Texture2D;
 		radarDot = Resources.Load("radardot") as Texture2D;
 		radarCircle = Resources.Load("radarcircle") as Texture2D;
+	}
+	
+	void OnTriggerEnter(Collider other){
+		if (other.tag == "CreatureCore")
+			addQueue.Add(new KeyValuePair<Transform, float>(other.transform, 0f));
+	}
+	
+	void OnTriggerExit(Collider other){
+		if (detectables.ContainsKey(other.transform))
+			removeQueue.Remove(other.transform);
 	}
 	
 	void Update(){
@@ -64,18 +72,21 @@ public class RadarGUI : GUIScreen {
 		angle = RadarAngle();
 		GUI.color = Color.white;
 		GUI.DrawTexture(new Rect(143, 143, 14, 14), radarCenter);
-		times[0] = Time.time;
-		int ptr = 1;
- 		foreach (Transform t in detectables){
-			
+ 		foreach (Transform t in detectables.Keys){
 			Vector2 convertedDistance = GetRadarPosition(t);
 			if (convertedDistance.magnitude < 150){
 				convertedDistance = rotate(convertedDistance, angle);
-				GUI.color = RadarBlink(ptr, convertedDistance);
+				GUI.color = RadarBlink(t, convertedDistance);
 				GUI.DrawTexture(new Rect((143 + convertedDistance.x), (143 - convertedDistance.y), 15, 15), radarDot);
 			}
-			ptr++;
-			
+		}
+		foreach (KeyValuePair<Transform, float> pair in addQueue){
+			detectables.Add(pair.Key, pair.Value);
+			addQueue.Remove(pair);
+		}
+		foreach (Transform k in removeQueue){
+			removeQueue.Remove(k);
+			detectables.Remove(k);
 		}
 	}
 	
@@ -91,12 +102,12 @@ public class RadarGUI : GUIScreen {
 		return angle;
 	}
 	
-	Color RadarBlink(int ptr, Vector2 vec){
-		times[ptr] -= Time.deltaTime/radarTime;
+	Color RadarBlink(Transform t, Vector2 vec){
+		detectables[t] -= Time.deltaTime/radarTime;
 		if (Mathf.Pow(vec.magnitude - 150*percent, 2) < 25){
-			times[ptr] = 1;
+			detectables[t] = 1;
 		}
-		return new Color(1,1,1,times[ptr]);
+		return new Color(1,1,1,detectables[t]);
 	}
 	
 	Vector3 rotate(Vector2 vec, float angle){

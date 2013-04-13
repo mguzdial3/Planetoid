@@ -1,22 +1,26 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player\PictureTaking.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GUI\SpaceShipGUI.cs">
     <Files>
-      <File FileName="Assets\Scripts\GUI\ReviewGUI.cs" Line="179" Column="38" />
-      <File FileName="Assets\Scripts\Player\PictureTaking.cs" Line="242" Column="31" />
+      <File FileName="Assets\Scripts\GUI\SpaceShipGUI.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\Notification.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\ReviewGUI.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player\PictureTaking.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Creatures\CreatureSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\SpaceShipGUI.cs" Line="28" Column="30" />
       <File FileName="Assets\Scripts\GUI\RadarGUI.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\General\DataHolder.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player\PowerupManager.cs" Line="29" Column="84" />
+      <File FileName="Assets\Scripts\Player\PowerupManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\PowerUps\Flashlight.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\GUI\PauseMenuGUI.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\General\DayNightCycle.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\LeaveToShipGUI.cs" Line="11" Column="2" />
-      <File FileName="Assets\Scripts\GUI\Notification.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\LeaveToShipGUI.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\TransitionGUI.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\General\Timer.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Player\PictureData.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GUI\GUIScreen.cs" Line="236" Column="1" />
+      <File FileName="Assets\Scripts\GUI\GUIScreen.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\IntroScriptManager.cs" Line="34" Column="54" />
+      <File FileName="Assets\Scripts\GUI\DimLightsGUI.cs" Line="23" Column="1" />
+      <File FileName="Assets\Scripts\Player\CharacterMotion.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

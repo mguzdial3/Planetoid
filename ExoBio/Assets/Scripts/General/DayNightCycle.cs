@@ -52,7 +52,7 @@ public class DayNightCycle : MonoBehaviour {
 	void TimeNotifications(){
 		if (restartScene.Percent() > .9f && !lateNotified){
 			gameObject.AddComponent<LeaveToShipGUI>();
-			StartCoroutine(Notification.Notify("Boss", "It's getting late, you better wrap up soon!", new Dictionary<string, Notification.buttonAction>(), 4f));
+			StartCoroutine(Notification.Notify("It's getting late, you better wrap up soon!", false, 4f));
 			lateNotified = true;
 		}
 	}

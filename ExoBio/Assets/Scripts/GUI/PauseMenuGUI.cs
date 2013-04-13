@@ -5,6 +5,7 @@ public class PauseMenuGUI : GUIScreen {
 	
 	float width = 800f;
 	float height = 700f;
+	float originalFixedDeltaTime;
 	float buttonWidth, buttonHeight, heightBlock;
 	bool paused = false;
 	public GUISkin skin;
@@ -14,12 +15,13 @@ public class PauseMenuGUI : GUIScreen {
 		blackTex = new Texture2D(1,1);
 		blackTex.SetPixel(0,0,new Color(0,0,0,.3f));
 		blackTex.Apply();
-		
+		originalFixedDeltaTime = Time.fixedDeltaTime;
 		controlsPic = Resources.Load("controls") as Texture2D;
 		buttonWidth = 200f;
 		buttonHeight = 50f;
 		if (DataHolder.tutorial){
 			Time.timeScale = 0;
+			Time.fixedDeltaTime = 0;
 			StartCoroutine(FadeIn());
 			paused = true;
 			Screen.lockCursor = false;
@@ -49,23 +51,32 @@ public class PauseMenuGUI : GUIScreen {
 	void Update(){
 		if (Input.GetKeyDown(KeyCode.Escape)){
 			if (paused){
+				Time.fixedDeltaTime = originalFixedDeltaTime;
 				Time.timeScale = 1;
 				StartCoroutine(FadeOut(.2f));
 				paused = false;
-			Screen.lockCursor = true;
-			Screen.showCursor = false;
+				Screen.lockCursor = true;
+				Screen.showCursor = false;
 			}
 			else{
-				Time.timeScale = 0;
-				StartCoroutine(FadeIn());
-				paused = true;
+				StartCoroutine(PauseGame());
 			Screen.lockCursor = false;
 			Screen.showCursor = true;
 			}
 		}
 	}
 	
+	IEnumerator PauseGame(){
+		StartCoroutine(FadeIn());
+		originalFixedDeltaTime = Time.fixedDeltaTime;
+		Time.timeScale = 0.00001f;
+		Time.fixedDeltaTime = 0.00000001f;
+		paused = true;
+		yield return 0;
+	}
+	
 	void MainMenu(){
+		Time.fixedDeltaTime = originalFixedDeltaTime;
 		Time.timeScale = 1;
 		DayNightCycle.ToReview();
 		StartCoroutine(FadeOut(.2f));
@@ -74,6 +85,7 @@ public class PauseMenuGUI : GUIScreen {
 	void Login(){
 		StartCoroutine(FadeOut(.2f));
 		paused = false;
+		Time.fixedDeltaTime = originalFixedDeltaTime;
 		Time.timeScale = 1;
 		Screen.lockCursor = true;
 		Screen.showCursor = false;

@@ -65,8 +65,10 @@
      <Compile Include="Assets\Scripts\GUI\CameraGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\ClipTest.cs" />
      <Compile Include="Assets\Scripts\GUI\CreditsGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\DimLightsGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\FieldGuideGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIScreen.cs" />
+     <Compile Include="Assets\Scripts\GUI\IntroScriptManager.cs" />
      <Compile Include="Assets\Scripts\GUI\LeaveToShipGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\LoginGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\MainMenuGUI.cs" />
@@ -107,6 +109,7 @@
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
+     <None Include="Assets\Resources\AtmosphereFromSpace.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>

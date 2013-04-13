@@ -13,7 +13,7 @@ public class PowerupManager : MonoBehaviour {
 				AddPower(power);	
 			}
 			else{
-				Notification.Notify("New Item!", "You've got a new gadget, the " + power + "!",null, 5f);
+				StartCoroutine(Notification.Notify("You've got a new gadget, the " + power + "!",false	, 5f));
 				AddPower(power);
 			}
 		}
